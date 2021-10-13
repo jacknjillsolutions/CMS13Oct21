@@ -7247,37 +7247,36 @@ def csv_dailyreceipts(request):
 
         #messages.error(request,err)
         return render(request,'DailyReceipts_manage.html',locals())
-##prodMaster
-def Prodmaster(request):
+##prodMaster-SIREESHA-13Oct21
+def ProdMaster(request):
     #try:
         if request.session.has_key('name'):
             brch = request.user.extendeduser.branch
             if request.user.extendeduser.branch == brch:
                 branch=Branch.objects.all() 
                 customer = Customer.objects.using(brch).filter(active='1').distinct().order_by(('custCode'))
-                Prodmaster =  prodMaster.objects.using(brch).filter().distinct()
                 Prodtype = prodType.objects.using(brch).filter().distinct()
                 
                 if request.method == "POST": 
-                    print('dfghjhg',request.POST.getlist('PCode[]'))                  
-                    for index,j in enumerate(request.POST.getlist('PCode[]')):
-                        if index != 0 :
-                            details_form = prodMaster.objects.using(brch).create(
-                                
-                                PCode = request.POST.getlist('PCode[]')[index],
-                                PName = request.POST.getlist('PName[]')[index],
-                                document = request.POST.getlist('document[]')[index],
+                     
+                   
+                    for index,j in enumerate(request.POST.getlist('custCode[]')):
+                        if index != 0 :                            
+                            details_form =  prodMaster.objects.using(brch).create(
+                                PCode = request.POST["PCodeE"],
+                                PName = request.POST["PNameE"],
+                                prod_type = request.POST["prod_typeE"],
+                                active = request.POST["activeE"],
                                 custCode = request.POST.getlist('custCode[]')[index],
-                                prod_type = request.POST.getlist('prod_type[]')[index],
                                 PStDate = request.POST.getlist('PStDate[]')[index],
                                 PEndDate = request.POST.getlist('PEndDate[]')[index],
                                 unitRate = request.POST.getlist('unitRate[]')[index],
                                 qty_from = request.POST.getlist('qty_from[]')[index],
-                                qty_to = request.POST.getlist('qty_to[]')[index],
-                                active = request.POST.getlist('active[]')[index],
+                                qty_to = request.POST.getlist('qty_to[]')[index],                                
+            
                                 )
-                            details_form.save(using=brch)
-                            print("4321",brch)
+                            details_form.save(using=brch)    
+                            
                     messages.success(request, 'Your details have been saved!')
                 return render(request,'ProdMaster1.html',locals())
         else:
@@ -7286,6 +7285,7 @@ def Prodmaster(request):
 
         #messages.error(request,err)
         return render(request,'ProdMaster1.html',locals())
+
 def manageproductmaster(request):
     try:
         brch = request.user.extendeduser.branch

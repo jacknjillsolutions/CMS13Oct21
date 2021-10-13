@@ -103,28 +103,28 @@ input[type=number] {
 </style>
 
 <div class="container">
-	<h2><b><center>Product Master</center></b></h2>
+	<h2><b><center> Product Master </center></b></h2>
 	<div style="border:1px solid #dddddd;padding:10px;margin:10px;">
 			
 			<div class="col-md-85 col-sm-85 col-xs-85">
 				
-					<form  method="POST"  action="/Prodmaster/" enctype="">
+					<form  method="POST"  action="/ProdMaster/" enctype="">
 						{% csrf_token %}
 						<div class="col-md-05 col-sm-07 col-xs-09">
 							<label><b>Code</b></label>
-							<input type="text" name="PCode[]" style="width: 14%;" id="code" required>&emsp;&emsp;
+							<input type="text" name="PCodeE" style="width: 14%;" id="PCodeE" required>&emsp;&emsp;
 		  					<label><b>Name</b></label>
-							<input type="text" name="PName[]"style="width: 14%;" width="70px" id="name"required>&emsp;&emsp;
+							<input type="text" name="PNameE" style="width: 14%;" width="70px" id="PNameE" required>&emsp;&emsp;
 							<label for="lname"><b>Document</b></label>
-							<input type="file" name="document[]" style="width: 50%;" accept="image/gif, image/jpeg, image/jpg , image/png">&emsp;&emsp;
+							<input type="file" name="documentE" style="width: 50%;" accept="image/gif, image/jpeg, image/jpg , image/png">&emsp;&emsp;
 							<label><b>Prod Type</b></label>&emsp;&emsp;
-			 				<select id="prod" name="prod_type[]" style="width: 100px;" >	
+			 				<select id="prod_typeE" name="prod_typeE" style="width: 100px;" >	
 							 {% for Prodtype in Prodtype %}
 							   <option value="{{Prodtype.pTypeCode}}" data-name="{{Prodtype.pTypeName}}">{{Prodtype.pTypeCode}}-{{Prodtype.pTypeName}}
 						   {% endfor %}
 						   </select>&emsp;&emsp;
 						   <b>Active</b>&emsp;
-							<select name="active[]" id='active'>
+							<select name="activeE" id='activeE'>
 								
 								<option value="yes">Yes</option>
 								<option value="no">NO</option>
@@ -133,58 +133,7 @@ input[type=number] {
 						<br><br>
 						<div class="col-md-22 col-sm-22 col-xs-22" style="border: 1px solid #dddddd;">
 						<!-- <h6>Cow Milk</h6> -->
-			  	    		<div class="col-md-12 col-sm-12 col-xs-12  no_pad">		<!--<table>
-			  	    				<tr>						            	
-						                <th>Center</th>						     
-						                <th>Milk Type </th>
-						                <th>Samp No</th> 
-						                <th>Can</th>
-						                <th>Qty(Kgs)</th>
-						                <th>Fat</th>
-						                <th>Clr</th> 
-						                <th>Snf</th> 
-						            </tr>
-						        </thead>
-						        <tbody id='form' class="form-block_1">
-						            <tr class="odd"  role="row">
-						            	
-										<tr>						            	
-						                <th>Cust Type</th>						     
-						                <th>Start Date </th>
-						                <th>End Date</th> 
-						                <th>Unit Rate</th>
-						                <th>Qty From</th>
-						                <th>Qty TO</th>
-						                
-						            </tr>
-						        </thead>
-						        <tbody id='form' class="form-block_1">
-						            <tr class="odd"  role="row">
-						            	
-										<td>&emsp;&emsp;&emsp;&emsp;	
-											<select name="custCode[]" id="custCode">
-												<option>All</option>
-												{% for customer in customer %}
-											    <option value="{{customer.custCode}}" data-name="{{customer.custName}}">{{customer.custCode}}-{{customer.custName}}</option>
-											    {% endfor %}
-										  	</select>
-										  	
-										</td>  
-						               <td>
-						              	<input type="date" id="datePicker" name="PStDate[]"  style="width:55px" value="{{curdate}}" required="" id="stdate">
-										</td>
-										<td>
-						              	<input type="date" id="datePicker1" name="PEndDate[]"  style="width:55px" value="{{curdate}}" required="" id="enddate">
-										</td>
-						                <td>&emsp;<input type="number" class="width_percent workflowinputRadius" name="unitRate[]" step="any" id="unitrate"></td>
-						                <td>&emsp;&emsp;
-										<input type="number" class="width_percent workflowinputRadius" name="qty_from[]" step="any" style="text-align:right" id="qty"></td>
-										<td>&emsp;&emsp;
-										<input type="number" class="width_percent workflowinputRadius" name="qty_to[]" step="any" style="text-align:right" id="qty1"></td>       
-						       
-						                
-						            </tr> 
-						        </table>-->       
+			  	    		<div class="col-md-12 col-sm-12 col-xs-12  no_pad">		    
 
 						  	<table class="table display data-table text-nowrap" id ="doctable"  style="width:100%;">
 								    
@@ -229,7 +178,7 @@ input[type=number] {
 					    		<button type="button" class="btn btn-primary btn-lg"><a class="btn backgroundBlue add-more-btn addDeleteButton">Add</a></button>&emsp;&emsp;
 					    		<a type="edit" class="btn btn-primary btn-lg" value="edit"  href="/manageproductmaster/" >Edit</a>
 								<button type="submit" class="btn btn-primary btn-lg"  id="submitData" value="" disabled>Submit </button>
-								<a type="cancel" class="btn btn-primary btn-lg" value="cancel"  href="/Prodmaster/" >Cancel </a>
+								<a type="cancel" class="btn btn-primary btn-lg" value="cancel"  href="/ProdMaster/" >Cancel </a>
 								
 									<br></br>
 			    				<table class="table display data-table1 text-nowrap" style="width:100%;">

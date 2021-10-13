@@ -2521,6 +2521,7 @@ class custType(models.Model):
 
     def __str__(self):
         return self.code
+        
 class prodType(models.Model):
     pTypeCode = models.CharField(max_length=255,unique=True)
     pTypeName = models.CharField(max_length=255,unique=True)

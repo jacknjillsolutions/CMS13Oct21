@@ -23,7 +23,7 @@ urlpatterns = [
     
 
     ##prodmaster,manage_prodmaster,
-    url(r'^Prodmaster/$', views.Prodmaster, name='Prodmaster'),
+    url(r'^ProdMaster/$', views.ProdMaster, name='ProdMaster'),
     url(r'^manageproductmaster/$', views.manageproductmaster, name='manageproductmaster'),
     url(r'^manageproductmaster1/$', views.manageproductmaster1, name='manageproductmaster1'),
     
