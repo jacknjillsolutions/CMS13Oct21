@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^manageproductmaster1/$', views.manageproductmaster1, name='manageproductmaster1'),
     
     url(r'^salesexec/$', views.salesexec, name='salesexec'),
-    url(r'^manage_salesexec/$', views.manage_salesexec, name='manage_salesexec'),
+    url(r'^manage_salesExec/$', views.manage_salesexec, name='manage_salesExec'),
     url(r'^managesalesexec/$', views.managesalesexec, name='managesalesexec'),
 
     ##Sales Module

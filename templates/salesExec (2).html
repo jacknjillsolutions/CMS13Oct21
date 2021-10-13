@@ -1,10 +1,11 @@
 {% extends "header.html" %}
-{% block title %}JacknJill{% endblock %}
+{% block title %}Ls Milks{% endblock %}
 {% block description %}{% endblock %}
 {% block keyword %}{% endblock %}
 {% load static %}
 {% load mathfilters %}
 {% block content %}
+
 <style>
 select {
 	width: 100px;
@@ -72,6 +73,30 @@ font-family: 'Arial', sans-serif;
 }
 
 	</style>
+	<script> 
+    $(document).ready(function() { 
+        $(function() { 
+            $( "#my_date_picker" ).datepicker(); 
+        }); 
+
+    }) 
+	$( ".start_date" ).datepicker({
+	  defaultDate: +7
+	});
+
+</script> 
+<script>
+$(document).ready( function() {
+    var now = new Date();
+ 
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#datePicker').val(today);
+});</script>
 	<script>
 	$(document).ready(function(){  
 	$("select").change(function() {   
@@ -136,6 +161,25 @@ font-family: 'Arial', sans-serif;
   });
 
 	</script>
+	<script>
+
+    $(document).ready(function(){
+    document.getElementById("active").value = localStorage.getItem("active");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("active",document.getElementById("active").value);
+  });
+
+	</script>
+<script>
+    function myFunction() {
+        var bank=document.getElementById("supervisor").value; 
+        {
+            document.getElementById("supervisor").value = "S";
+        }
+        }
+    </script>
 <script>
 
     $(document).ready(function(){
@@ -158,26 +202,60 @@ font-family: 'Arial', sans-serif;
   });
 
 </script>
-<script>
-    function myFunction() {
-        var bank=document.getElementById("supervisor").value; 
-        {
-            document.getElementById("supervisor").value = "S";
-        }
-        }
-    </script>
-
 <div class="container">
-	<h2><center><b>Sales Exec</b></center></h2>
+	<h2><center><b>Supervisor</b></center></h2>
 	<form  method="POST" action="" enctype="">
 		{% csrf_token %}
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label><b> Code</b></label>&emsp;&ensp;&nbsp;&emsp;&emsp;&emsp;
+		<input class="border-right" type="text" name="code" placeholder="Enter Code" id="supervisor" onclick="myFunction()" required="">
+		
+		
+		
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;<label><b> Name</b> &nbsp;&nbsp; </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;
+		<input class="border-right" type="text" name="name" id="supervisor1"placeholder="Enter Name" required=""><br><br>
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;<label for="fname"><b>Joining Date</b></label>&nbsp;&emsp;
+			<input type="date"  id="datePicker" name="datefrom" placeholder="DD/MM/YYYY"  value="{{curdate}}"required="">
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&emsp;&ensp;&ensp;&nbsp;<label for="fname"><b> Contract End Date</b></label>
+            &emsp;
+            <input type="date" id="datePicker1" name="dateto" placeholder="DD/MM/YYYY"   value="{{curdate}}"required="">
+            <br><br>
 
-		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-		<a type="new" class="btn btn-primary btn-lg" value="new"  href="/salesExec/" >New </a>
-		<a type="edit" class="btn btn-primary btn-lg" value="edit"  href="/manageSalesExec/" >Edit </a>
+            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<label ><b>Route</b></label>&nbsp;&emsp;&emsp;&emsp;&nbsp;
+		<select name="route" id="supervisorroute1" required>
+			<option></option>
+				{% for route in route %}
+					<option value="{{route.Route_number}}-{{route.Route_name}}">{{route.Route_number}}-{{route.Route_name}}</option>
+				{% endfor %}
+		</select>
+		<select name="route1" id="supervisorroute2">
+			<option></option>
+				{% for route in route %}
+					<option value="{{route.Route_number}}-{{route.Route_name}}">{{route.Route_number}}-{{route.Route_name}}</option>
+				{% endfor %}
+		</select>
+		<select name="route2" id="supervisorroute3">
+			<option></option>
+				{% for route in route %}
+					<option value="{{route.Route_number}}-{{route.Route_name}}">{{route.Route_number}}-{{route.Route_name}}</option>
+				{% endfor %}
+		</select><br><br>
+	
+		&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<b>Active</b>&emsp;&emsp;&emsp;
+				<select name="active" id='active'>
+					<option></option>
+					<option value="yes">Yes</option>
+					<option value="no">NO</option>
+				</select><br></br>	
+	
+		
+		<center><a type="new" class="btn btn-primary btn-lg" value="new"  href="/supervisor/" >New </a>&emsp;&emsp;
+		<button type="reset" class="btn btn-primary btn-lg" value="Reset"> Reset </button>&emsp;&emsp;
+		<button type="submit" class="btn btn-primary btn-lg"onclick="compare()"> Submit </button>&emsp;&emsp;
+		<a type="edit" class="btn btn-primary btn-lg" value="edit"  href="/managesupervisor/" >Edit </a></center>
 
 	</form>
-</div>
+</div><br><br><br>
 
 
 {% endblock %}

@@ -697,6 +697,10 @@ def manageroute(request):
     #messages.info(request,'err')
     return render (request,'manageroute1.html',locals())
 
+
+
+
+
 def supervisor(request):
     try:
         if request.session.has_key('name'):
@@ -6784,6 +6788,79 @@ def dailySalesReport(request):
         return render(request,'dailySalesReport.html',locals())
 ## end dialysalesReport
 
+
+## Start SalesExec
+#SalesExec - SEcode,SEname,SEJoinDate,SELastDate,Zone_attached,Zone_attached1,Zone_attached2,active,remove
+def salesexec(request):
+    try:
+        if request.session.has_key('name'):
+            brch = request.user.extendeduser.branch
+            if request.user.extendeduser.branch == brch:
+                zone = Zone.objects.using(brch).all()
+                print("111")
+                if request.method == "POST":
+                    datefrom = request.POST["datefrom"]
+                    dateto = request.POST["dateto"]
+                    # z = request.POST.get('active')
+                    # if z == 'Yes':
+                    #     active = True
+                    # else:
+                    #     active = False
+                    details_form = SalesExec.objects.using(brch).create(
+                        SEcode=request.POST["code"],
+                        SEname=request.POST["name"],
+                        SEJoinDate=request.POST["datefrom"],
+                        SELastDate=request.POST["dateto"],
+
+                        Zone_attached=request.POST["route"],
+                        Zone_attached1=request.POST["route1"],
+                        Zone_attached2=request.POST["route2"],
+                        #active = request.POST["active"],
+                        active = request.POST["active"],
+                        remove='N',
+                        # date_from = date.today(),
+                        # date_to = datetime.datetime.now() + timedelta(days=365 ),
+
+                    )
+                    details_form.save(using=brch)
+                    messages.success(request, 'Your details have been saved!')
+                return render(request, 'salesExec.html', locals())
+            else:
+                zone = Zone.objects.all()
+                if request.method == "POST":
+                    z = request.POST.get('active')
+                    if z == 'Yes':
+                        active = True
+                    else:
+                        active = False
+                    details_form = SalesExec.objects.create(
+                        SEcode=request.POST["code"],
+                        SEname=request.POST["name"],
+                        SEJoinDate=request.POST["datefrom"],
+                        SELastDate=request.POST["dateto"],
+
+                        Zone_attached=request.POST["route"],
+                        Zone_attached1=request.POST["route1"],
+                        Zone_attached2=request.POST["route2"],
+                        #active = request.POST["active"],
+                        active = request.POST["active"],
+                        remove='N',
+                        # date_from = date.today(),
+                        # date_to = datetime.datetime.now() + timedelta(days=365 )
+                    )
+                    details_form.save()
+                    messages.success(request, 'Your details have been saved!')
+            return render(request, 'salesExec.html', locals())
+        else:
+            return render(request, 'index.html', locals())
+    except Exception as err:
+        if search("1062", str(err)):
+            messages.error(request, 'Sales Executive Code Duplicated:' + request.POST["code"])
+        else:
+            messages.success(request, 'Invalid Data Entry Sales Exec')
+    # messages.info(request,'err')
+        return render(request, 'salesExec.html', locals())
+## End Sales Exec
 def dailySales(request):
     #try:
         if request.session.has_key('name'):
@@ -7496,7 +7573,9 @@ def manage_prodmaster(request):
 
 
 #### MANAGE PRODUCT MASTER END
-##Start SalesExec 
+##Start SalesExec --SIREESHA
+#SalesExec - SEcode,SEname,SEJoinDate,SELastDate,Zone_attached,Zone_attached1,Zone_attached2,active,remove
+
 def salesexec(request):
     try:
         if request.session.has_key('name'):
@@ -7517,11 +7596,12 @@ def salesexec(request):
                         SEJoinDate=request.POST["datefrom"],
                         SELastDate=request.POST["dateto"],
 
-                        Route_attached=request.POST["route"],
-                        Route_attached1=request.POST["route1"],
-                        Route_attached2=request.POST["route2"],
-                        remove = 'N',
+                        Zone_attached=request.POST["route"],
+                        Zone_attached1=request.POST["route1"],
+                        Zone_attached2=request.POST["route2"],
+                        #active = request.POST["active"],
                         active = request.POST["active"],
+                        remove='N',
                         # date_from = date.today(),
                         # date_to = datetime.datetime.now() + timedelta(days=365 ),
 
@@ -7537,31 +7617,31 @@ def salesexec(request):
                         active = True
                     else:
                         active = False
-                    details_form = Supervisor.objects.create(
-                        code=request.POST["code"],
-                        # date_from = date.today(),
-                        # descdate_to = datetime.datetime.now() + timedelta(days=365 ),
-                        name=request.POST["name"],
-                        datefrom=request.POST["datefrom"],
-                        dateto=request.POST["dateto "],
-                        Route_attached=request.POST["route"],
-                        Route_attached1=request.POST["route1"],
-                        Route_attached2=request.POST["route2"],
+                    details_form = SalesExec.objects.create(
+                        SEcode=request.POST["code"],
+                        SEname=request.POST["name"],
+                        SEJoinDate=request.POST["datefrom"],
+                        SELastDate=request.POST["dateto"],
+
+                        Zone_attached=request.POST["route"],
+                        Zone_attached1=request.POST["route1"],
+                        Zone_attached2=request.POST["route2"],
                         #active = request.POST["active"],
                         active = request.POST["active"],
+                        remove='N',
                         # date_from = date.today(),
                         # date_to = datetime.datetime.now() + timedelta(days=365 )
                     )
                     details_form.save()
                     messages.success(request, 'Your details have been saved!')
-            return render(request, 'supervisor.html', locals())
+            return render(request, 'salesExec.html', locals())
         else:
             return render(request, 'index.html', locals())
     except Exception as err:
         if search("1062", str(err)):
             messages.error(request, 'Supervisor Code Duplicated:' + request.POST["code"])
         else:
-            messages.success(request, 'Invalid Data Entry')
+            messages.success(request, 'Invalid Data Entry Sales Exec')
     # messages.info(request,'err')
         return render(request, 'salesExec.html', locals())
 # Modified by -2021-06-30,line no:310,311,line no:300,350 @Jagadeesh    
@@ -7576,33 +7656,33 @@ def managesalesexec(request):
             brch = request.user.extendeduser.branch
             if request.user.extendeduser.branch == brch:
 
-                supervisor = Supervisor.objects.using(brch).all()
-                al = Supervisor.objects.using(brch).all()
+                salesExec = SalesExec.objects.using(brch).all()
+                al = SalesExec.objects.using(brch).all()
                 
-                route = Route.objects.using(brch).all()
+                zone = Zone.objects.using(brch).all()
                 if request.method == "POST":
-                    al = Supervisor.objects.using(brch).all()
+                    al = SalesExec.objects.using(brch).all()
             else:
-                supervisor = Supervisor.objects.all()
-                al = Supervisor.objects.all()
+                salesExec = SalesExec.objects.all()
+                al = SalesExec.objects.all()
         
-                route = Route.objects.all()
+                zone = Zone.objects.all()
                 if request.method == "POST":
-                    al = Supervisor.objects.all()
+                    al = SalesExec.objects.all()
 
                 #dateH = request.POST["date_t2"]
                 #shiftH = request.POST["shift_t2"]
                 #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            return render(request,'manage_supervisor.html',locals())
+            return render(request,'manage_salesExec.html',locals())
         else:
             return render(request,'index.html',locals())
     except Exception as err:
             if search("1062",str(err)):
-                messages.error(request,'Supervisor Code Duplicated:'+request.POST["code"])
+                messages.error(request,'Sales Executive Code Duplicated:'+request.POST["code"])
             else:
-                messages.success(request,'Invalid Data Entry')
+                messages.success(request,'Invalid Data Entry for Sales Exec')
         #messages.info(request,'err')
-    return render (request,'manage_supervisor.html',locals())   
+    return render (request,'manage_salesExec.html',locals())   
 # Modified by -2021-06-30,line no:412,413,line no:389-458 @Jagadeesh
 # Html file :manage_supervisor.html, line no:111,112,157-160
 # kidzee : N/A
@@ -7612,13 +7692,13 @@ def manage_salesexec(request):
         if request.session.has_key('name'):
             brch = request.user.extendeduser.branch
             if request.user.extendeduser.branch == brch:
-                supervisor = Supervisor.objects.using(brch).all()
-                al = Supervisor.objects.using(brch).all()
+                salesExec = SalesExec.objects.using(brch).all()
+                al = SalesExec.objects.using(brch).all()
                 today = date.today()
                 t_m = datetime.datetime.now().month
                 start_of_m = today.replace(day=1, month=t_m)
                 end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
-                route = Route.objects.using(brch).all()
+                zone = Zone.objects.using(brch).all()
                 if request.method == "POST":
                     #datefrom = request.POST.get('datefrom')
                     #dateto = request.POST.get('dateto')
@@ -7628,62 +7708,62 @@ def manage_salesexec(request):
                     #     active = True
                     # else:
                     #     active = False
-                    al = Supervisor.objects.using(brch).all()
+                    al = SalesExec.objects.using(brch).all()
                     #datefrom = datetime.datetime.strptime(datefrom,'%Y-%m-%d')
                    #dateto = datetime.datetime.strptime(dateto,'%Y-%m-%d')
                     #dateH = request.POST["date_t2"]
                     #shiftH = request.POST["shift_t2"]
                     for index,j in enumerate(request.POST.getlist("code[]")):
-                        minmaxfat = Supervisor.objects.using(brch).filter(id=request.POST.getlist("dcid2[]")[index]).update( 
-                            code = request.POST.getlist("code[]")[index],
-                            name = request.POST.getlist("name[]")[index],
-                            Route_attached=request.POST.getlist("route[]")[index],
-                            Route_attached1=request.POST.getlist("route1[]")[index],
-                            Route_attached2=request.POST.getlist("route2[]")[index],
-                            datefrom = request.POST.getlist("datefrom[]")[index],
-                            dateto = request.POST.getlist("dateto[]")[index],
+                        minmaxfat = SalesExec.objects.using(brch).filter(id=request.POST.getlist("dcid2[]")[index]).update( 
+                            SEcode = request.POST.getlist("code[]")[index],
+                            SEname = request.POST.getlist("name[]")[index],
+                            Zone_attached=request.POST.getlist("route[]")[index],
+                            Zone_attached1=request.POST.getlist("route1[]")[index],
+                            Zone_attached2=request.POST.getlist("route2[]")[index],
+                            SEJoinDate = request.POST.getlist("datefrom[]")[index],
+                            SELastDate = request.POST.getlist("dateto[]")[index],
                             active = request.POST.getlist("active[]")[index],
                             remove= request.POST.getlist("remove[]")[index],
                             )
                     
                     messages.success(request, 'Your details have been saved!')
 
-                    data = Supervisor.objects.using(brch).filter(remove='Y').delete()
+                    data = SalesExec.objects.using(brch).filter(remove='Y').delete()
             else:
-                supervisor = Supervisor.objects.all()
-                al = Supervisor.objects.all()
+                salesExec = SalesExec.objects.all()
+                al = SalesExec.objects.all()
         
-                route = Route.objects.all()
+                zone = Zone.objects.all()
                 if request.method == "POST":
                     # z = request.POST.get('active')
                     # if z == 'Yes':
                     #     active = True
                     # else:
                     #     active = False
-                    al = Supervisor.objects.all()
+                    al = SalesExec.objects.all()
 
                     #dateH = request.POST["date_t2"]
                     #shiftH = request.POST["shift_t2"]
                     for index,j in enumerate(request.POST.getlist("code[]")):
-                        minmaxfat = Supervisor.objects.filter(id=request.POST.getlist("dcid2[]")[index]).update( 
-                            code = request.POST.getlist("code[]")[index],
-                            name = request.POST.getlist("name[]")[index],
-                            Route_attached=request.POST.getlist("route[]")[index],
-                            Route_attached1=request.POST.getlist("route1[]")[index],
-                            Route_attached2=request.POST.getlist("route2[]")[index],
-                            datefrom = request.POST.getlist("datefrom[]")[index],
-                            dateto = request.POST.getlist("dateto[]")[index],
+                        minmaxfat = SalesExec.objects.filter(id=request.POST.getlist("dcid2[]")[index]).update( 
+                            SEcode = request.POST.getlist("code[]")[index],
+                            SEname = request.POST.getlist("name[]")[index],
+                            Zone_attached=request.POST.getlist("route[]")[index],
+                            Zone_attached1=request.POST.getlist("route1[]")[index],
+                            Zone_attached2=request.POST.getlist("route2[]")[index],
+                            SEJoinDate = request.POST.getlist("datefrom[]")[index],
+                            SELastDate = request.POST.getlist("dateto[]")[index],
                             active = request.POST.getlist("active[]")[index],
                             remove= request.POST.getlist("remove[]")[index],
                             )
                     
                     messages.success(request, 'Your details have been saved!')
 
-                    data = Supervisor.objects.filter(remove='Y').delete()           
+                    data = SalesExec.objects.filter(remove='Y').delete()           
                 
 
                 #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-            return render(request,'managesupervisor1.html',locals())
+            return render(request,'managesalesExec1.html',locals())
         else:
             return render(request,'index.html',locals())
     # except Exception as err:
@@ -7692,7 +7772,7 @@ def manage_salesexec(request):
     #         else:
     #             messages.success(request,'Invalid Data Entry')
     #     #messages.info(request,'err')
-        return render (request,'managesupervisor1.html',locals())
+        return render (request,'managesalesExec1.html',locals())
     ##END
 
 

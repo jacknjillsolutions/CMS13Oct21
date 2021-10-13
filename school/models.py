@@ -2488,6 +2488,7 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+#SalesExec - SEcode,SEname,SEJoinDate,SELastDate,Zone_attached,Zone_attached1,Zone_attached2,active,remove
 class SalesExec(models.Model):
     SEcode = models.CharField(unique = True,max_length=255)
     SEname = models.CharField(max_length=255,null=True,blank=True)
