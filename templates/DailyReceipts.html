@@ -121,7 +121,7 @@ input[type=date]{
 							<label><b>Branch</b></label>&ensp;
 							<input type="text" name="branch11" value="{% if user.is_authenticated %}{{user.extendeduser.branch}}{%endif%}" disabled>
 							&emsp;<label for="fname"><b>Date </b></label>&ensp;
-							<input type="date"  id="datePicker1" name="date" placeholder="Enter YYYY/MM/DD" required="" >&emsp;&emsp;
+							<input type="date"  id="datePicker1" name="date" placeholder="Enter YYYY/MM/DD" required="" onchange="getordernumber()">&emsp;&emsp;
 				
 						  	<!--<label><b>Date</b></label>&ensp;
 							<input type="date" id="datePicker" name="dateform" placeholder="Enter YYYY-MM-DD" required="" value="{{curdate}}">&emsp;&emsp;
@@ -254,7 +254,7 @@ input[type=date]{
 </div>
 </div>
 <script type="text/javascript">
-	document.getElementById('centre_code').onchange = function() {
+	document.getElementById('datePicker1').onchange = function() {
     alert(this.value);
 	}
 	// $(document).on("change", "#centercode", function(){

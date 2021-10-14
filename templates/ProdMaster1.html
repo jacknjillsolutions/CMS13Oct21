@@ -100,11 +100,32 @@ input[type=number] {
  input{
 	width:70px !important;
 }
+.scroll{
+	overflow-y: auto;
+	overflow-x: auto;
+	height: 200px;
+	margin-top: 0px;
+	width: 100%;
+	white-space: nowrap;
+}
+	
+.scroll thead th {
+	position: sticky;
+    top: 0;
+        
+}
 </style>
-
+<script>
+	function myFunction() {
+		var bank=document.getElementById("centercode").value; 
+		{
+			document.getElementById("centercode").value = "C";
+		}
+		}
+	</script>
 <div class="container">
 	<h2><b><center> Product Master </center></b></h2>
-	<div style="border:1px solid #dddddd;padding:10px;margin:10px;">
+	<!--<div style="border:1px solid #dddddd;padding:10px;margin:10px;">-->
 			
 			<div class="col-md-85 col-sm-85 col-xs-85">
 				
@@ -112,11 +133,11 @@ input[type=number] {
 						{% csrf_token %}
 						<div class="col-md-05 col-sm-07 col-xs-09">
 							<label><b>Code</b></label>
-							<input type="text" name="PCodeE" style="width: 14%;" id="PCodeE" required>&emsp;&emsp;
+							<input type="text" name="PCodeE" style="width: 14%;" id="PCodeE" required onclick="myFunction()">&emsp;&emsp;
 		  					<label><b>Name</b></label>
 							<input type="text" name="PNameE" style="width: 14%;" width="70px" id="PNameE" required>&emsp;&emsp;
 							<label for="lname"><b>Document</b></label>
-							<input type="file" name="documentE" style="width: 50%;" accept="image/gif, image/jpeg, image/jpg , image/png">&emsp;&emsp;
+							<input type="file" name="documentE" style="width: 50%;" accept="image/gif, image/jpeg, image/jpg , image/png" id="documentE">&emsp;&emsp;
 							<label><b>Prod Type</b></label>&emsp;&emsp;
 			 				<select id="prod_typeE" name="prod_typeE" style="width: 100px;" >	
 							 {% for Prodtype in Prodtype %}
@@ -131,7 +152,7 @@ input[type=number] {
 							</select><br></br>	
 						</div>
 						<br><br>
-						<div class="col-md-22 col-sm-22 col-xs-22" style="border: 1px solid #dddddd;">
+						<!--<div class="col-md-22 col-sm-22 col-xs-22" style="border: 1px solid #dddddd;">-->
 						<!-- <h6>Cow Milk</h6> -->
 			  	    		<div class="col-md-12 col-sm-12 col-xs-12  no_pad">		    
 
@@ -140,12 +161,12 @@ input[type=number] {
 			    
 								<thead class="tableHeadcolor">
 						            <tr>						            	
-						                <th>Cust Type</th>						     
-						                <th>Start Date </th>
-						                <th>End Date</th> 
-						                <th>Unit Rate</th>
-						                <th>Qty From</th>
-						                <th>Qty TO</th>
+						                <th  style="background-color: #69bc5f !important;">Cust Type</th>						     
+						                <th  style="background-color: #69bc5f !important;">Start Date </th>
+						                <th  style="background-color: #69bc5f !important;">End Date</th> 
+						                <th  style="background-color: #69bc5f !important;">Unit Rate</th>
+						                <th  style="background-color: #69bc5f !important;">Qty From</th>
+						                <th  style="background-color: #69bc5f !important;">Qty TO</th>
 						                
 						            </tr>
 						        </thead>
@@ -181,10 +202,12 @@ input[type=number] {
 								<a type="cancel" class="btn btn-primary btn-lg" value="cancel"  href="/ProdMaster/" >Cancel </a>
 								
 									<br></br>
-			    				<table class="table display data-table1 text-nowrap" style="width:100%;">
+			    				<div class ="scroll">
+			 				<table class="table display data-table1 text-nowrap" style="width:100%;">
 							        <tbody id='form' class="form-block_1">   
 							       </tbody>
 							 	</table>
+						</div>
 			 
 						</div>
 			</div>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -348,66 +371,88 @@ input[type=number] {
 <script>
 
     $(document).ready(function(){
-    document.getElementById("time").value = localStorage.getItem("time");
+    document.getElementById("PCodeE").value = localStorage.getItem("PCodeE");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("time",document.getElementById("time").value);
+    localStorage.setItem("PCodeE",document.getElementById("PCodeE").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("goodsour").value = localStorage.getItem("goodsour");
+    document.getElementById("PNameE").value = localStorage.getItem("PNameE");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("goodsour",document.getElementById("goodsour").value);
+    localStorage.setItem("PNameE",document.getElementById("PNameE").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("code_center").value = localStorage.getItem("code_center");
+    document.getElementById("documentE").value = localStorage.getItem("documentE");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("code_center",document.getElementById("code_center").value);
+    localStorage.setItem("documentE",document.getElementById("documentE").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("milktype").value = localStorage.getItem("milktype");
+    document.getElementById("prod_typeE").value = localStorage.getItem("prod_typeE");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("milktype",document.getElementById("milktype").value);
+    localStorage.setItem("prod_typeE",document.getElementById("prod_typeE").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("samplecode").value = localStorage.getItem("samplecode");
+    document.getElementById("custCode").value = localStorage.getItem("custCode");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("samplecode",document.getElementById("samplecode").value);
+    localStorage.setItem("custCode",document.getElementById("custCode").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("can").value = localStorage.getItem("can");
+    document.getElementById("stdate").value = localStorage.getItem("stdate");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("can",document.getElementById("can").value);
+    localStorage.setItem("stdate",document.getElementById("stdate").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("enddate").value = localStorage.getItem("enddate");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("enddate",document.getElementById("enddate").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("unitRate").value = localStorage.getItem("unitRate");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("unitRate",document.getElementById("unitRate").value);
   });
 
 </script>
@@ -425,33 +470,11 @@ input[type=number] {
 <script>
 
     $(document).ready(function(){
-    document.getElementById("fat").value = localStorage.getItem("fat");
+    document.getElementById("qty1").value = localStorage.getItem("qty1");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("fat",document.getElementById("fat").value);
-  });
-
-</script>
-<script>
-
-    $(document).ready(function(){
-    document.getElementById("clr").value = localStorage.getItem("clr");
-        });
-
-   $(window).on('beforeunload', function() {
-    localStorage.setItem("clr",document.getElementById("clr").value);
-  });
-
-</script>
-<script>
-
-    $(document).ready(function(){
-    document.getElementById("snf").value = localStorage.getItem("snf");
-        });
-
-   $(window).on('beforeunload', function() {
-    localStorage.setItem("snf",document.getElementById("snf").value);
+    localStorage.setItem("qty1",document.getElementById("qty1").value);
   });
 
 </script>

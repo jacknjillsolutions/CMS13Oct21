@@ -68,29 +68,45 @@ th{
 
 td{
     text-align: center !important;
-    padding: 25px !important;
+    padding: 5px !important;
 	border: 1px solid black !important;
 
 }
+.scroll{
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 200px;
+    margin-top: 0px;
+    width: 100%;
+    white-space: nowrap;
+
+}
+    
+.scroll thead th {
+    position: sticky;
+    top: 0;
+        
+}
+
 </style>
 
 
 
 <div class="container">
-	<div style="border:1px solid #dddddd;padding:10px;margin:10px;">
+	<!--<div style="border:1px solid #dddddd;padding:10px;margin:10px;">-->
 		<div class="col-md-12 col-sm-12 col-xs-12">
 				<h2><b><center> Manage Product Master</center></b></h2>
 
 			<form  method="POST"  action="/manageproductmaster/" enctype="">  
 				{% csrf_token %}
 				
-                <label><b>Code</b></label>
+               <!-- <label><b>Code</b></label>
                 <input type="text" name="PCode[]" style="width:100px;" id="code" onclick="myFunction()" value ="{{PM.PCode}}" required>&emsp;&emsp;
                 <label><b>Name</b></label>
                 <input type="text" name="PName[]"style="width: 100px;" width="70px" id="name" value = "{{PM.PName}}"required>&emsp;&emsp;
-                <!--<label for="lname"><b>Document</b></label>
-                <input type="file" name="document" width="100px" id="document"required value="{{PM.document}}">&emsp;&emsp;-->
-                <label><b>Prod Type</b></label>&emsp;&emsp;
+                <label for="lname"><b>Document</b></label>
+                <input type="file" name="document" width="100px" id="document"required value="{{PM.document}}">&emsp;&emsp;
+                <label><b>ProdType</b></label>&emsp;&emsp;
                 <select id="prod" name="pTypeCode[]" value="{{PM.pTypeCode}}" style="width: 100px;"> 
                  <option value="{{PM.pTypeCode}}"{% if PM.pTypeCode == form.PM.value %} selected{% endif %} selected>{{PM.pTypeCode}}</option>
                     {% for Prodtype in Prodtype %}
@@ -102,7 +118,7 @@ td{
                     <option></option>
                     <option value="yes">Yes</option>
                     <option value="no">NO</option>
-                </select><br></br>  
+                </select><br></br>  -->
 			    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                 <button type="submit" class="btn btn-primary btn-lg" id="getdata" value=""> Get Data </button>
 			
@@ -116,16 +132,23 @@ td{
                     <div class="col-md-12 col-sm-12 col-xs-12">
         
                         <h3><b><center></center></b></h3>
-                        <table>
+                        <div class ="scroll">
+                        <table class="css-serial">
                             <thead>
                                 <tr>
-                                   <th>Cust Type</th>                            
-                                    <th>Start Date </th>
-                                    <th>End Date</th> 
-                                    <th>Unit Rate</th>
-                                    <th>Qty From</th>
-                                    <th>Qty TO</th>
-                                    <th>Remove</th>
+                                    <th style="background-color: #69bc5f !important;">S.NO</th>
+                                    <th style="background-color: #69bc5f !important;">PCode</th>
+                                    <th style="background-color: #69bc5f !important;">PName</th>
+                                    <th style="background-color: #69bc5f !important;">Document</th>
+                                    <th style="background-color: #69bc5f !important;">ProdType</th>
+                                   <th style="background-color: #69bc5f !important;">Cust Type</th>                            
+                                    <th style="background-color: #69bc5f !important;">Start Date </th style="background-color: #69bc5f !important;">
+                                    <th style="background-color: #69bc5f !important;">End Date</th> 
+                                    <th style="background-color: #69bc5f !important;">Unit Rate</th>
+                                    <th style="background-color: #69bc5f !important;">Qty From</th>
+                                    <th style="background-color: #69bc5f !important;">Qty TO</th>
+                                    <th style="background-color: #69bc5f !important;">Active</th>
+                                    <th style="background-color: #69bc5f !important;">Remove</th>
                                 
                                 </tr>
                             </thead>
@@ -134,10 +157,24 @@ td{
                                 
                                     {% for PM in PM %}
                                     <tr class="odd"  role="row">
-                                        
-                                        <input type="hidden" value="{{PM.id}}" name="PMid1[]" style="text-align:center">
-                                        <td>&emsp;&emsp;&emsp;&emsp;    
-                                            <select name="custCode[]" id="custCode" value="{{PM.custCode}}">
+                                    <td> &nbsp;</td>
+                                     <input type="hidden" value="{{PM.id}}" name="PMid1[]" style="text-align:center">
+                                    <td>
+                                        <input type="text"  value ="{{PM.PCode}}" name="PCode[]"  id="PCodeE" style="width:75px"></td>
+                                        <td>
+                                        <input type="text" value ="{{PM.PName}}" name="PName[]"  id="PName" style="width:75px"></td>
+                                        <td>
+                                        <input type="file" class="width_percent workflowinputRadius"  value ="{{PM.document}}" name="document[]" step="any" id="documentE" style="width:150px"></td>    
+                                       <td>
+                                         <select id="prod" name="prod_type[]" value="{{PM.prod_type}}" style="width:75px"> 
+                                         <option value="{{PM.prod_type}}"{% if PM.prod_type == form.PM.value %} selected{% endif %} selected>{{PM.prod_type}}</option>
+                                            {% for Prodtype in Prodtype %}
+                                            <option value="{{Prodtype.pTypeCode}}">{{Prodtype.pTypeCode}}</option>
+                                            {% endfor %}
+                                       </select>
+                                   </td>
+                                        <td>    
+                                            <select name="custCode[]" id="custCode" value="{{PM.custCode}}" style="width:75px">
 
                                                 <option value="{{PM.custCode}}"{% if PM.custCode == form.PM.value %} selected{% endif %} selected>{{PM.CustCode}}</option>
                                                 {% for customer in customer %}
@@ -152,12 +189,21 @@ td{
                                         <td>
                                         <input type="date" id="datePicker1" name="PEndDate[]"  style="width:150px" value= "{{PM.PEndDate|date:'Y-m-d'}}" required="" id="enddate">
                                         </td>
-                                        <td>&emsp;<input type="number" class="width_percent workflowinputRadius" name="unitRate[]" step="any" id="unitrate" value="{{PM.unitRtae}}" style="width:100px"></td>
-                                        <td>&emsp;&emsp;
-                                        <input type="number" class="width_percent workflowinputRadius" name="qty_from[]" step="any" style="width:100px" id="qty" value="{{PM.qty_from}}"></td>
-                                        <td>&emsp;&emsp;
-                                        <input type="number" class="width_percent workflowinputRadius" name="qty_to[]" step="any" style="width:100px" id="qty1" value="{{qty_to}}"></td>               
-                                        
+                                        <td><input type="number" name="unitRate[]"  id="unitrate" value="{{PM.unitRate}}" style="width:75px"></td>
+                                        <td>
+                                        <input type="number" name="qty_from[]" id="qty" value="{{PM.qty_from}}" style="width:75px"></td>
+                                        <td>
+                                        <input type="number" class="width_percent workflowinputRadius" name="qty_to[]" id="qty1" value="{{PM.qty_to}}" style="width:75px"></td>               
+                                        <td>
+                                        <select name="active[]" value="{{PM.active}}" id="active" required>
+
+                                                <option value="yes">yes</option>
+                                                <option value="no">no</option>
+                                                <option value="{{ PM.active }}" {% if PM.active == form.PM.vPMue %} selected{% endif %} selected>{{PM.active}}</option>
+                
+                                                                                        
+                                            </select>
+                                     </td>
                                         
                                         <td>
                                             <select name="remove[]" value="{{PM.id}}" style="width:65px">
@@ -172,6 +218,7 @@ td{
                                     {% endfor %}
                            </tbody>             
                         </table>
+                    </div>
                     </div>
                 </div>
                     
@@ -198,6 +245,129 @@ td{
         <br>
         <br>
         <br>
+<style>
+    .css-serial {
+ counter-reset: serial-number; 
+}
+.css-serial td:first-child:before {
+ counter-increment: serial-number;
+ content: counter(serial-number); 
+}
+    th{
+    text-align: center !important;
+    }
+</style>
+
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("PCodeE").value = localStorage.getItem("PCodeE");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("PCodeE",document.getElementById("PCodeE").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("PNameE").value = localStorage.getItem("PNameE");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("PNameE",document.getElementById("PNameE").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("documentE").value = localStorage.getItem("documentE");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("documentE",document.getElementById("documentE").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("prod_typeE").value = localStorage.getItem("prod_typeE");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("prod_typeE",document.getElementById("prod_typeE").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("custCode").value = localStorage.getItem("custCode");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("custCode",document.getElementById("custCode").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("stdate").value = localStorage.getItem("stdate");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("stdate",document.getElementById("stdate").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("enddate").value = localStorage.getItem("enddate");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("enddate",document.getElementById("enddate").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("unitRate").value = localStorage.getItem("unitRate");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("unitRate",document.getElementById("unitRate").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("qty").value = localStorage.getItem("qty");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("qty",document.getElementById("qty").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("qty1").value = localStorage.getItem("qty1");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("qty1",document.getElementById("qty1").value);
+  });
+
+</script>
         
         
         

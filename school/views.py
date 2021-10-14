@@ -7333,7 +7333,7 @@ def ProdMaster(request):
                 branch=Branch.objects.all() 
                 customer = Customer.objects.using(brch).filter(active='1').distinct().order_by(('custCode'))
                 Prodtype = prodType.objects.using(brch).filter().distinct()
-                
+                Prodmaster =  prodMaster.objects.using(brch).filter().distinct() 
                 if request.method == "POST": 
                      
                    
@@ -7364,77 +7364,98 @@ def ProdMaster(request):
         return render(request,'ProdMaster1.html',locals())
 
 def manageproductmaster(request):
-    try:
+    #try:
         brch = request.user.extendeduser.branch
         if request.user.extendeduser.branch == brch:
             branch=Branch.objects.all() 
             customer = Customer.objects.using(brch).filter(active='1').distinct().order_by(('custCode'))
-            Prodmaster =  prodMaster.objects.using(brch).filter().distinct() 
+            Prodmaster =  prodMaster.objects.using(brch).filter().distinct()
+            Prodtype = prodType.objects.using(brch).filter().distinct() 
             if request.method == "POST":                    
             
 
                 PM = prodMaster.objects.using(brch).filter()
                        
-                return render(request,'ProductMaster_manage.html',locals())
-        else:
-            branch=Branch.objects.all() 
-            customer = Customer.objects.using(brch).filter(active='1').distinct().order_by(('custCode'))
-            Prodmaster =  prodMaster.objects.using(brch).filter().distinct() 
-            if request.method == "POST":                    
-            
-
-                PM = prodMaster.objects.using(brch).filter()
+            return render(request,'ProductMaster_manage.html',locals())
+        
                        
-                return render(request,'ProductMaster_manage.html',locals())
-            else:
-                return render(request,'index.html',locals())
-    except Exception as err:
-        if search("1062",str(err)):
-            messages.error(request,'Key field Duplicated:'+request.POST["routeCode"],)
+            
         else:
-            messages.success(request,'Your details have been saved')
-    return render (request,'ProductMaster_manage.html',locals())
+            return render(request,'index.html',locals())
+    #except Exception as err:
+     #   if search("1062",str(err)):
+      #      messages.error(request,'Key field Duplicated:'+request.POST["routeCode"],)
+       # else:
+        #    messages.success(request,'Your details have been saved')
+        return render (request,'ProductMaster_manage.html',locals())
 def manageproductmaster1(request):
-    try:
+    #try:
         brch = request.user.extendeduser.branch
         if request.user.extendeduser.branch == brch:
             brch = request.user.extendeduser.branch
             if request.user.extendeduser.branch == brch:
                 branch=Branch.objects.all() 
                 customer = Customer.objects.using(brch).filter(active='1').distinct().order_by(('custCode'))
-                Prodmaster =  prodMaster.objects.using(brch).filter().distinct() 
+                Prodmaster =  prodMaster.objects.using(brch).filter().distinct()
+                Prodtype = prodType.objects.using(brch).filter().distinct() 
                 if request.method == "POST":                    
-                    for index,j in enumerate(request.POST.getlist('cust_type[]')):
+                    for index,j in enumerate(request.POST.getlist('custCode[]')):
                             
 
                             details_form =  prodMaster.objects.using(brch).filter(id=request.POST.getlist("PMid1[]")[index]).update( 
-                                PCode = request.POST["PCode"],
-                                PName = request.POST["PName"],
-                                document = request.POST["document"],
-                                prod_type = request.POST.getlist["prod_type"],
-                                cust_type = request.POST.getlist('cust_type[]')[index],
+                                PCode = request.POST.getlist('PCode[]')[index],
+                                PName = request.POST.getlist('PName[]')[index],
+                                prod_type = request.POST.getlist('prod_type[]')[index],
+                                active = request.POST.getlist('active[]')[index],
+                                custCode = request.POST.getlist('custCode[]')[index],
                                 PStDate = request.POST.getlist('PStDate[]')[index],
                                 PEndDate = request.POST.getlist('PEndDate[]')[index],
                                 unitRate = request.POST.getlist('unitRate[]')[index],
                                 qty_from = request.POST.getlist('qty_from[]')[index],
-                                qty_to = request.POST.getlist('qty_to[]')[index],
-                                active = request.POST.getlist("active[]")[index],
+                                qty_to = request.POST.getlist('qty_to[]')[index],                                
                                 remove= request.POST.getlist('remove[]')[index],
                                 
                                 )
                     messages.success(request, 'Your details have been saved!')
-                    data = daily_receipts.objects.using(brch).filter(remove='Y').delete()
+                    data = prodMaster.objects.using(brch).filter(remove='Y').delete()
 
                     return render(request,'ProductMaster_manage.html',locals())
                 else:
                     return render(request,'ProductMaster_manage.html',locals())
-    except Exception as err:
-        if search("1062",str(err)):
-            messages.error(request,'Key field Duplicated:'+request.POST["routeCode"],)
-        else:
-            messages.success(request,'Your details have been saved!')
+    #except Exception as err:
+        #if search("1062",str(err)):
+            #messages.error(request,'Key field Duplicated:'+request.POST["routeCode"],)
+        #else:
+           # messages.success(request,'Your details have been saved!')
     #messages.info(request,'err')
-    return render (request,'ProductMaster_manage.html',locals())
+                return render (request,'ProductMaster_manage.html',locals())
+def Productmasterreport(request):
+    brch = request.user.extendeduser.branch
+    if request.user.extendeduser.branch == brch:
+
+        Prodmaster =  prodMaster.objects.using(brch).filter().distinct()
+        Prodtype = prodType.objects.using(brch).filter().distinct() 
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day =1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        # return HttpResponse(end_of_m)
+        if request.method == "POST":
+            #datefrom = request.POST["datefrom"]
+            #dateto = request.POST["dateto"]
+            PCode = request.POST["PCodeE"]
+            active = request.POST["active"]
+            
+            
+            if PCode == 'all' and active == 'all':
+                PM = prodMaster.objects.using(brch).filter().distinct()
+            elif PCode == 'all' and active != 'all':
+                PM = prodMaster.objects.using(brch).filter(active = active).distinct()
+            elif active == 'all' and PCode != 'all':
+                PM = prodMaster.objects.using(brch).filter(PCode = PCode).distinct()
+            else:
+                PM = prodMaster.objects.using(brch).filter(PCode=PCode,active=active).distinct()
+    return render(request,'productmasterreport.html',locals())
 
 ##module:  CREATE PRODUCT MASTER STARTS 10-10-21
 #prodmaster,manage_prodmaster,
