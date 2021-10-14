@@ -7268,9 +7268,11 @@ def manage_dailyreceipts(request):
 
                 if request.method == "POST":
                     recdate1 = request.POST['recdateT']    
-                   # print('@7194',recdate1)
+                    #print('@7194',recdate1)
+                    #print('#876',recdateT)
                     
                     dr = daily_receipts.objects.using(brch).filter(recdate=recdate1)
+                   
                     
 
             return render(request,'DailyReceipts_manage.html',locals())
@@ -7448,14 +7450,49 @@ def Productmasterreport(request):
             
             
             if PCode == 'all' and active == 'all':
-                PM = prodMaster.objects.using(brch).filter().distinct()
+                pm = prodMaster.objects.using(brch).filter().distinct()
             elif PCode == 'all' and active != 'all':
-                PM = prodMaster.objects.using(brch).filter(active = active).distinct()
+                pm = prodMaster.objects.using(brch).filter(active = active).distinct()
             elif active == 'all' and PCode != 'all':
-                PM = prodMaster.objects.using(brch).filter(PCode = PCode).distinct()
+                pm = prodMaster.objects.using(brch).filter(PCode = PCode).distinct()
             else:
-                PM = prodMaster.objects.using(brch).filter(PCode=PCode,active=active).distinct()
+                pm = prodMaster.objects.using(brch).filter(PCode=PCode,active=active).distinct()
     return render(request,'productmasterreport.html',locals())
+class GeneratePdfproductmaster_report(View):
+    def get(self, request,slug,slug1, *args, **kwargs):
+        template = get_template('pdf_productmasterreport.html')
+        today = date.today()
+        start_of_yr = today.replace(day =1, month=4)
+        end_of_yr = start_of_yr + relativedelta(months=11,days=31) - timedelta(days=1)
+        brch = request.user.extendeduser.branch
+        if slug == 'all' and slug1 == 'all':
+            data = prodMaster.objects.using(brch).filter().distinct()
+        elif slug == 'all' and slug1 != 'all':
+            data = prodMaster.objects.using(brch).filter(active = slug1).distinct()
+        elif slug != 'all' and slug1 == 'all':
+            data = prodMaster.objects.using(brch).filter(PCode = slug).distinct()
+        else:
+            data = prodMaster.objects.using(brch).filter(PCode = slug,active = slug1 ).distinct()
+       
+        context = {
+            'PCode':slug,
+            'active': slug1,
+            'data':data,
+        }
+        html = template.render(context)
+        pdf = render_to_pdf("pdf_productmasterreport.html",context)
+        if pdf:
+            response = HttpResponse(pdf,content_type = "application/pdf")
+            filename = slug+".pdf"
+            content = "inline; filename=%s" %(filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename=%s" %(filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not Found")
+
+
 
 ##module:  CREATE PRODUCT MASTER STARTS 10-10-21
 #prodmaster,manage_prodmaster,
@@ -27874,9 +27911,7 @@ def branchreport(request):
 ##branch Reports Ends HERE##
 ##Branch Pdf Start 
 ## Ver 06071121AM branch - Displaying the report- pdf_branchreport.html 23006 - 23038
-##Modified by - 2021-07-20 @Dhana
-## HTML files : pdf_branchreport.html 
-## Kidzee URL  : pdfbranch 
+##Modified by - 2021-07-20 @Dhana## Kidzee URL  : pdfbranch 
 ## Schol URl : NA
 class GeneratePdfBranch_report(View):
     def get(self, request,slug,slug1, *args, **kwargs):

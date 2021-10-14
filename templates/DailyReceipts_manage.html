@@ -1,3 +1,4 @@
+
 {% extends "header.html" %}
 {% block title %}JacknJill{% endblock %}
 {% block description %}{% endblock %}
@@ -25,7 +26,7 @@ $(document).ready( function() {
     var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
 
 
-   $('#datePicker').val(today);
+   $('#datePicker1').val(today);
 });</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -121,7 +122,7 @@ input[type=date]{
 				{% csrf_token %}
 				<h2><b><center>Daily Receipts Manage</center></b></h2>
 				&emsp;<label for="fname"><b>Date </b></label>&ensp;
-				<input type="date"  id="datePicker" name="recdateT" placeholder="Enter YYYY/MM/DD" required="" >&emsp;&emsp;
+				<input type="date"  id="datePicker1" name="recdateT" placeholder="Enter YYYY/MM/DD" required="" >&emsp;&emsp;
 				   
 				</div>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 				<button type="submit" class="btn btn-primary btn-lg" id="getdata" value="">Fetch </button>
@@ -185,7 +186,7 @@ input[type=date]{
 						               	<!--<td>
 						              	<input type="date" id="datePicker" name="PDate[]"  style="width:35px" value="{{dr.recdate}}"required="">-->
 						              	<td>
-			  	 						<input type="date" id="datePicker1" name="Recdate[]" placeholder="DD/MM/YYYY"  value= "{{dr.recdate|date:'Y-m-d'}}"></td>
+			  	 						<input type="date" id="datePicker" name="Recdate[]" placeholder="DD/MM/YYYY"  value= "{{dr.recdate|date:'Y-m-d'}}"></td>
 							
 										<td>
 										<input type="text"  name="RecType[]" class="width_percent workflowinputRadius"value="{{dr.recType}}" step="any" style="width:50px"></td>
@@ -376,6 +377,17 @@ function myFunction1() {
 
    $(window).on('beforeunload', function() {
     localStorage.setItem("datepicker",document.getElementById("datepicker").value);
+  });
+
+</script>
+<script>
+
+    $(document).ready(function(){
+    document.getElementById("datePicker1").value = localStorage.getItem("datepicker1");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("datepicker1",document.getElementById("datepicker1").value);
   });
 
 </script>

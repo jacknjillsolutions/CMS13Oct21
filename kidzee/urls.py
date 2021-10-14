@@ -17,7 +17,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from school.views import Generatepdf_emsareareport,GeneratePdfemspnd_report,GeneratePdfemsplanttype_report,GeneratePdfemspnd_report,Generatepdf_irrigationreport,GeneratePdfemsfertiliser_report,Generatepdf_harvestingreport,Generatepdf_noticereport,GeneratePdfversionreport,GeneratePdfLoanschdeulereport,GeneratePdfCensus_report,GeneratePdfEmsSmryAreaBlock,GeneratePdfEmsSmryTreeHealth,GeneratePdf,GeneratePdfRefundreport,GeneratePdfMilkCollection,GeneratePdfAdditions_report,GeneratePdfConsolidated,GeneratePdfDepositreport,GeneratePdfUserdata_report,GeneratePdfRoutewisebillabstract,GeneratePdfDaywiseabstract,GeneratePdfLoanreport, GeneratePdfMilkbillcenter,GeneratePdfDaily,GeneratePdfMilk,GeneratePdfBank_wise,GeneratePdfBank_report,GeneratePdfCenter_report,GeneratePdfBmCenter_report,GeneratePdfBmCategory_report,GeneratePdfBmRoute_report,GeneratePdfCmCenter_report,GeneratePdfCmCategory_report,GeneratePdfCmRoute_report,GeneratePdfBranch_report,GeneratePdfRoute_report,GeneratePdfSupervisor_report,GeneratePdfAgent_report,GeneratePdfDepartment_report,GeneratePdfRole_report,GeneratePdfOffice_report,GeneratePdfVillage_report,GeneratePdfMilktype_report,GeneratePdfCategory_report,GeneratePdfFormula_report,GeneratePdfCenter_reportbank
+from school.views import Generatepdf_emsareareport,GeneratePdfproductmaster_report,GeneratePdfemspnd_report,GeneratePdfemsplanttype_report,GeneratePdfemspnd_report,Generatepdf_irrigationreport,GeneratePdfemsfertiliser_report,Generatepdf_harvestingreport,Generatepdf_noticereport,GeneratePdfversionreport,GeneratePdfLoanschdeulereport,GeneratePdfCensus_report,GeneratePdfEmsSmryAreaBlock,GeneratePdfEmsSmryTreeHealth,GeneratePdf,GeneratePdfRefundreport,GeneratePdfMilkCollection,GeneratePdfAdditions_report,GeneratePdfConsolidated,GeneratePdfDepositreport,GeneratePdfUserdata_report,GeneratePdfRoutewisebillabstract,GeneratePdfDaywiseabstract,GeneratePdfLoanreport, GeneratePdfMilkbillcenter,GeneratePdfDaily,GeneratePdfMilk,GeneratePdfBank_wise,GeneratePdfBank_report,GeneratePdfCenter_report,GeneratePdfBmCenter_report,GeneratePdfBmCategory_report,GeneratePdfBmRoute_report,GeneratePdfCmCenter_report,GeneratePdfCmCategory_report,GeneratePdfCmRoute_report,GeneratePdfBranch_report,GeneratePdfRoute_report,GeneratePdfSupervisor_report,GeneratePdfAgent_report,GeneratePdfDepartment_report,GeneratePdfRole_report,GeneratePdfOffice_report,GeneratePdfVillage_report,GeneratePdfMilktype_report,GeneratePdfCategory_report,GeneratePdfFormula_report,GeneratePdfCenter_reportbank
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -35,7 +35,7 @@ urlpatterns = [
   #  url(r'^down/(?P<slug>.*)/(?P<slug1>.*)/(?P<slug2>.*)/$', GeneratePdf_date.as_view()),
     url(r'^milk/pdf1/$', GeneratePdfMilk.as_view()),
     #url(r'^milk/pdf11/$', GeneratePdfMilk2.as_view()),
-
+    url(r'^Productmasterreport/pdf/(?P<slug>.*)/(?P<slug1>.*)/$', GeneratePdfproductmaster_report.as_view()),
    # url(r'^day/pdf1/(?P<slug>.*)/(?P<slug1>.*)/(?P<slug2>.*)/(?P<slug3>.*)/$', GeneratePdfDay.as_view()),
     url(r'^bankreport/pdf1/(?P<slug>.*)/$',GeneratePdfBank_report.as_view()),
     url(r'^bankwise/pdf1/(?P<slug>.*)/(?P<slug1>.*)/(?P<slug2>.*)/(?P<slug3>.*)/$', GeneratePdfBank_wise.as_view()),

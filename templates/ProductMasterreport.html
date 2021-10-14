@@ -79,7 +79,7 @@ $(document).ready( function() {
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-xs-12">
-			<br><button type="button"><a href="/Productmasterreport/pdf/{{supervisorcode}}/{{datefrom}}/{{dateto}}/{{active}}/" target="_blank"> PDF Download</a></button>&emsp;
+			<br><button type="button"><a href="/Productmasterreport/pdf/{{PCode}}/{{active}}/" target="_blank"> PDF Download</a></button>&emsp;
 			<button type="button"><a href="/excel-supervisor-report/{{supervisorcode}}/" target="_blank"> Excel Download</a></button><br>
 			<form method="POST" action="" enctype=""><br>
 				{% csrf_token %}
@@ -143,19 +143,19 @@ $(document).ready( function() {
 					</tr>
 				</thead>
 				<tbody>
-					{% for PM in PM %}
+					{% for pm in pm %}
 					<tr>
-						<td>{{PM.PCode}}</td>
-						<td>{{PM.PName}}</td>
-						<td>{{PM.document}}</td>
-						<td>{{PM.prod_type}}</td>
-						<td>{{PM.custCode}}</td>
-						<td>{{PM.PStDate|date:'d-m-Y'}}</td>
-						<td>{{PM.PEndDate|date:'d-m-Y'}}</td>
-						<td>{{PM.unitRate}}</td>
-						<td>{{PM.qty_from}}</td>
-						<td>{{PM.qty_to}}</td>
-						<td>{{PM.active}}</td>
+						<td>{{pm.PCode}}</td>
+						<td>{{pm.PName}}</td>
+						<td>{{pm.document}}</td>
+						<td>{{pm.prod_type}}</td>
+						<td>{{pm.custCode}}</td>
+						<td>{{pm.PStDate|date:'d-m-Y'}}</td>
+						<td>{{pm.PEndDate|date:'d-m-Y'}}</td>
+						<td>{{pm.unitRate}}</td>
+						<td>{{pm.qty_from}}</td>
+						<td>{{pm.qty_to}}</td>
+						<td>{{pm.active}}</td>
 					</tr>
 					{% endfor %}
 				</tbody>

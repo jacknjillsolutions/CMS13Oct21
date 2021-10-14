@@ -120,8 +120,8 @@ input[type=date]{
 							<!--<h6><b>Daily Sale Entries</b></h6>-->
 							<label><b>Branch</b></label>&ensp;
 							<input type="text" name="branch11" value="{% if user.is_authenticated %}{{user.extendeduser.branch}}{%endif%}" disabled>
-							&emsp;<label for="fname"><b>Date </b></label>&ensp;
-							<input type="date"  id="datePicker1" name="date" placeholder="Enter YYYY/MM/DD" required="" onchange="getordernumber()">&emsp;&emsp;
+							&emsp;<label for="fname"><b>Date</b></label>&ensp;
+							<input type="date"  id="datePicker1" name="date" placeholder="Enter YYYY/MM/DD" required="" value={{curdate}}>&emsp;&emsp;
 				
 						  	<!--<label><b>Date</b></label>&ensp;
 							<input type="date" id="datePicker" name="dateform" placeholder="Enter YYYY-MM-DD" required="" value="{{curdate}}">&emsp;&emsp;
@@ -198,7 +198,10 @@ input[type=date]{
 						        <tbody id='form' class="form-block_1">
 						            <tr class="odd"  role="row">
 						            	
-										<td>	
+										
+										<!--<input type="hidden" value="{{curdate}}" name="dateform" style="text-align:right">
+						            	<input type="hidden"  name="OrderNo[]" style="text-align:right">-->
+						            	<td>	
 											<select name="OrderNo[]" id="order"  style="width:150px">
 												{% for Dailysales in Dailysales %}
 											    <option value="{{Dailysales.orderNo}}" >{{Dailysales.orderNo}}-{{Dailysales.custcode}}</option>
@@ -254,7 +257,7 @@ input[type=date]{
 </div>
 </div>
 <script type="text/javascript">
-	document.getElementById('datePicker1').onchange = function() {
+	document.getElementById('centercode').onchange = function() {
     alert(this.value);
 	}
 	// $(document).on("change", "#centercode", function(){
@@ -459,5 +462,15 @@ input[type=date]{
   });
 
 </script>
+<script>
 
+    $(document).ready(function(){
+    document.getElementById("datePicker1").value = localStorage.getItem("datePicker1");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("datePicker1",document.getElementById("datePicker1").value);
+  });
+
+</script>
 {% endblock %}
