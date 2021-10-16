@@ -99,6 +99,18 @@ $(document).ready( function() {
 
 
 </style>
+<style>
+    .css-serial {
+ counter-reset: serial-number; 
+}
+.css-serial td:first-child:before {
+ counter-increment: serial-number;
+ content: counter(serial-number); 
+}
+th{
+    text-align: center !important;
+    }
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 
@@ -148,12 +160,12 @@ $(document).ready( function() {
 					
 					
 				<div class ="scroll">
-				<table >
+				<table class="css-serial">
 			
 			
 				<thead >
 					<tr>
-						
+						<th width="5%" style="background-color: #69bc5f !important;">S.NO</th>
 						<th width="10%" style="background-color: #69bc5f !important;">PCode</th>
                         <th width="10%" style="background-color: #69bc5f !important;">PName</th>
                         <th width="10%" style="background-color: #69bc5f !important;">Document</th>
@@ -174,17 +186,18 @@ $(document).ready( function() {
 				<tbody>
 					{% for pm in pm %}
 					<tr>
-						<td>{{pm.PCode}}</td>
-						<td>{{pm.PName}}</td>
-						<td>{{pm.document}}</td>
-						<td>{{pm.prod_type}}</td>
-						<td>{{pm.custCode}}</td>
-						<td>{{pm.PStDate|date:'d-m-Y'}}</td>
-						<td>{{pm.PEndDate|date:'d-m-Y'}}</td>
-						<td>{{pm.unitRate}}</td>
-						<td>{{pm.qty_from}}</td>
-						<td>{{pm.qty_to}}</td>
-						<td>{{pm.active}}</td>
+						<td style="text-align:center !important"></td>
+						<td style="text-align:center !important"> {{pm.PCode}}</td>
+						<td style="text-align:center !important">{{pm.PName}}</td>
+						<td style="text-align:center !important">{{pm.document}}</td>
+						<td style="text-align:center !important">{{pm.prod_type}}</td>
+						<td style="text-align:center !important">{{pm.custCode}}</td>
+						<td style="text-align:center !important">{{pm.PStDate|date:'d-m-Y'}}</td>
+						<td style="text-align:center !important">{{pm.PEndDate|date:'d-m-Y'}}</td>
+						<td style="text-align:center !important">{{pm.unitRate}}</td>
+						<td style="text-align:center !important">{{pm.qty_from}}</td>
+						<td style="text-align:center !important">{{pm.qty_to}}</td>
+						<td style="text-align:center !important">{{pm.active}}</td>
 					</tr>
 					{% endfor %}
 				</div>
@@ -193,7 +206,7 @@ $(document).ready( function() {
 			<br><br><br>
 		</div>
 	</div>
-</body>
+</body>  1
 	<br>
 		<br>
 		<br>

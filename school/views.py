@@ -7337,8 +7337,20 @@ def ProdMaster(request):
                 Prodtype = prodType.objects.using(brch).filter().distinct()
                 Prodmaster =  prodMaster.objects.using(brch).filter().distinct() 
                 if request.method == "POST": 
-                     
-                   
+                    f = request.POST.get('HvPhoto')
+                    if f:
+                        HvPhoto = True
+                    else:
+                        HvPhoto = False
+
+            
+                    if (HvPhoto ) : 
+                        myfile = request.FILES['HvPhoto']
+                        fs = FileSystemStorage(location="media/Prodmasterimage")
+                        filename = fs.save(myfile.name, myfile)
+                        uploaded_file_url = fs.url("../Prodmasterimage/"+filename)
+                    else :
+                        uploaded_file_url = ""      
                     for index,j in enumerate(request.POST.getlist('custCode[]')):
                         if index != 0 :                            
                             details_form =  prodMaster.objects.using(brch).create(
@@ -7346,6 +7358,7 @@ def ProdMaster(request):
                                 PName = request.POST["PNameE"],
                                 prod_type = request.POST["prod_typeE"],
                                 active = request.POST["activeE"],
+                                document = uploaded_file_url,
                                 custCode = request.POST.getlist('custCode[]')[index],
                                 PStDate = request.POST.getlist('PStDate[]')[index],
                                 PEndDate = request.POST.getlist('PEndDate[]')[index],
@@ -7409,6 +7422,7 @@ def manageproductmaster1(request):
                                 PName = request.POST.getlist('PName[]')[index],
                                 prod_type = request.POST.getlist('prod_type[]')[index],
                                 active = request.POST.getlist('active[]')[index],
+                                document = request.POST.getlist('document[]')[index],
                                 custCode = request.POST.getlist('custCode[]')[index],
                                 PStDate = request.POST.getlist('PStDate[]')[index],
                                 PEndDate = request.POST.getlist('PEndDate[]')[index],

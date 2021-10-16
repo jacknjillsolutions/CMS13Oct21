@@ -16,14 +16,14 @@
 	}
 td 
 	{
-  		border: 1px solid #dddddd !important;
+  		/*border: 1px solid #dddddd !important;*/
   		text-align: left !important;
   		padding: 4px !important;
 	}
 th{
 	text-align: center !important;
 	padding: 7px !important;
-	border: 1px solid #dddddd !important;
+	/*border: 1px solid #dddddd !important;*/
 }
 .no_pad{
 	padding-left:0px !important;
@@ -65,7 +65,22 @@ th{
 	
 	color:#000 !important;
 }
-   
+.scroll{
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 200px;
+    margin-top: 0px;
+    width: 100%;
+    white-space: nowrap;
+
+}
+    
+.scroll thead th {
+    position: sticky;
+    top: 0;
+        
+}
+  
  
 
 </style>
@@ -90,31 +105,37 @@ th{
 				{% csrf_token %}
 
 			<div class="col-md-12 col-sm-12 col-xs-12" id="table_notshow">
-				<div class="row">
-					<div class="col-md-12 col-sm-12 col-xs-12">
-						<table>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+        
+                        <h3><b><center></center></b></h3>
+                        <div class ="scroll">
+                        <table class="css-serial">
 							<thead class="tableHeadcolor">
 					            <tr>
 					            	
-					            	<th>Code</th>
-					                <th>Name</th>
+					            	<th style="background-color: #69bc5f !important;">S.NO
+
+					            		<th style="background-color: #69bc5f !important;">Code</th>
+					                <th style="background-color: #69bc5f !important;">Name</th>
 					               <!-- <th>Good Sour</th> -->
-					                <th>Validity Start Date</th>
+					                <th style="background-color: #69bc5f !important;">Validity Start Date</th>
 					              <!--  <th>name</th>-->
-					                <th>Validity End Date</th>
-					                <th>Value(in Rs.)</th> 
-					                <th>Product Code</th>
-					                <th>Discount(%)</th>
-					                <th>Quantity From</th>
-					                <th>Quantity To</th>
-					                <th >Active</th>
-					                <th>Remove</th>
+					                <th style="background-color: #69bc5f !important;">Validity End Date</th>
+					                <th style="background-color: #69bc5f !important;">Value(in Rs.)</th> 
+					                <th style="background-color: #69bc5f !important;">Product Code</th>
+					                <th style="background-color: #69bc5f !important;">Discount(%)</th>
+					                <th style="background-color: #69bc5f !important;">Quantity From</th>
+					                <th style="background-color: #69bc5f !important;">Quantity To</th>
+					                <th style="background-color: #69bc5f !important;">Active</th>
+					                <th style="background-color: #69bc5f !important;">Remove</th>
 					            </tr>
 					        </thead>
 					        <tbody id='form' class="form-block_1">
 
 					            	{% for al in al %}
 					            	<tr class="odd"  role="row">
+					            		<td></td>
 					            		<!-- <td><input type="text" value="{{dc.date}}" name="date" ></td>
 					            		 <td><input type="text" value="{{dc.shift}}" name="shift_loc1" ></td>-->
 					            		 <!--x = datetime.strptime(request.POST["date"], "%Y-%m-%d")
@@ -194,5 +215,17 @@ th{
 		</div>
 	</div>
 </div>
+<style>
+    .css-serial {
+ counter-reset: serial-number; 
+}
+.css-serial td:first-child:before {
+ counter-increment: serial-number;
+ content: counter(serial-number); 
+}
+    th{
+    text-align: center !important;
+    }
+</style>
 
 {% endblock %}			

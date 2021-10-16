@@ -71,6 +71,19 @@ $(document).ready( function() {
 	padding: 7px !important;
 	border: 1px white;
 }
+
+</style>
+<style>
+    .css-serial {
+ counter-reset: serial-number; 
+}
+.css-serial td:first-child:before {
+ counter-increment: serial-number;
+ content: counter(serial-number); 
+}
+th{
+    text-align: center !important;
+    }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -115,10 +128,10 @@ $(document).ready( function() {
 				  <button type="submit" class="btn btn-primary btn-lg" id="getdata" value=""> Get Data </button>
 				<br><br>
 			</form>
-			<table>
+			<table class="css-serial">
 				<thead>
 					<tr>
-   						 <th colspan="10" class="title_dash" style="text-transform: capitalize;background-color: #5d50c6 !important;">Coupon Report</th>
+   						 <th colspan="11" class="title_dash" style="text-transform: capitalize;background-color: #5d50c6 !important;">Coupon Report</th>
   					</tr>
   				</thead>
 			
@@ -131,7 +144,7 @@ $(document).ready( function() {
 			
 				<thead style="background-color: #69bc5f !important;">
 					<tr>
-						
+						<th width="5%" class="school_activity">S.NO</th>
 						<th width="10%" class="school_activity"> Code</th>
                         <th width="10%" class="school_activity"> Name</th>
                         <th width="10%" class="school_activity">Validity Start date</th>
@@ -150,16 +163,17 @@ $(document).ready( function() {
 				<tbody>
 					{% for al in al %}
 					<tr>
-						<td>{{al.cpCode}}</td>
-						<td>{{al.cpName}}</td>
-						<td>{{al.PStDate|date:'d-m-Y'}}</td>
-						<td>{{al.PEndDate|date:'d-m-Y'}}</td>
-						<td>{{al.CoupValue}}</td>
-						<td>{{al.PCode}}</td>
-						<td>{{al.discnt}}</td>
-						<td>{{al.qty_from}}</td>
-						<td>{{al.qty_to}}</td>
-						<td>{{al.active}}</td>
+						<td style="text-align:center !important"></td>
+						<td style="text-align:center !important">{{al.cpCode}}</td>
+						<td style="text-align:center !important">{{al.cpName}}</td>
+						<td style="text-align:center !important">{{al.PStDate|date:'d-m-Y'}}</td>
+						<td style="text-align:center !important">{{al.PEndDate|date:'d-m-Y'}}</td>
+						<td style="text-align:center !important">{{al.CoupValue}}</td>
+						<td style="text-align:center !important">{{al.PCode}}</td>
+						<td style="text-align:center !important">{{al.discnt}}</td>
+						<td style="text-align:center !important">{{al.qty_from}}</td>
+						<td style="text-align:center !important">{{al.qty_to}}</td>
+						<td style="text-align:center !important">{{al.active}}</td>
 					</tr>
 					{% endfor %}
 				</tbody>

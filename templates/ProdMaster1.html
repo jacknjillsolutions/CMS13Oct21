@@ -65,14 +65,14 @@ $(document).ready( function() {
 	}
 td 
 	{
-  		border: 1px solid #dddddd !important;
+  		border: 1px solid #000000  !important;
   		text-align: left; !important;
   		padding: 6px !important;
 	}
 th{
 	text-align: center !important;
 	padding: 6px !important;
-	border: 1px solid #dddddd !important;
+	border: 1px solid #000000  !important;
 }
 .no_pad{
 	padding-left:0px !important;
@@ -117,9 +117,9 @@ input[type=number] {
 </style>
 <script>
 	function myFunction() {
-		var bank=document.getElementById("centercode").value; 
+		var bank=document.getElementById("PCodeE").value; 
 		{
-			document.getElementById("centercode").value = "C";
+			document.getElementById("PCodeE").value = "C";
 		}
 		}
 	</script>
@@ -129,15 +129,16 @@ input[type=number] {
 			
 			<div class="col-md-85 col-sm-85 col-xs-85">
 				
-					<form  method="POST"  action="/ProdMaster/" enctype="">
+					<form  method="POST"  action="/ProdMaster/"  enctype="multipart/form-data">
 						{% csrf_token %}
 						<div class="col-md-05 col-sm-07 col-xs-09">
 							<label><b>Code</b></label>
 							<input type="text" name="PCodeE" style="width: 14%;" id="PCodeE" required onclick="myFunction()">&emsp;&emsp;
 		  					<label><b>Name</b></label>
 							<input type="text" name="PNameE" style="width: 14%;" width="70px" id="PNameE" required>&emsp;&emsp;
-							<label for="lname"><b>Document</b></label>
-							<input type="file" name="documentE" style="width: 50%;" accept="image/gif, image/jpeg, image/jpg , image/png" id="documentE">&emsp;&emsp;
+							<label><b>Upload Photo</b></label>
+				  			<input type="checkbox" name="HvPhoto" checked>
+				  <input type="file" name="HvPhoto" accept="image/gif, image/jpeg, image/jpg , image/png">&emsp;&emsp;&emsp;&emsp;
 							<label><b>Prod Type</b></label>&emsp;&emsp;
 			 				<select id="prod_typeE" name="prod_typeE" style="width: 100px;" >	
 							 {% for Prodtype in Prodtype %}
@@ -172,7 +173,7 @@ input[type=number] {
 						        </thead>
 						        <tbody id='form' class="form-block_1">
 						            <tr class="odd"  role="row">
-						            	<input type="hidden" value="{{currentdate}}" name="dateform" style="text-align:right">
+						            	
 										<td>&emsp;&emsp;&emsp;&emsp;	
 											<select name="custCode[]" id="custCode">
 												<option>All</option>
@@ -188,11 +189,11 @@ input[type=number] {
 										<td>
 						              	<input type="date" id="datePicker1" name="PEndDate[]"  style="width:55px" value="{{curdate}}" required="" id="enddate">
 										</td>
-						                <td>&emsp;<input type="number" class="width_percent workflowinputRadius" name="unitRate[]" step="any" id="unitrate"></td>
+						                <td>&emsp;<input type="number" class="width_percent workflowinputRadius" name="unitRate[]" step="any" id="unitRate"></td>
 						                <td>&emsp;&emsp;
-										<input type="number" class="width_percent workflowinputRadius" name="qty_from[]" step="any" style="text-align:right" id="qty"></td>
+										<input type="number" class="width_percent workflowinputRadius" name="qty_from[]" step="any" style="text-align:right" id="qty_from"></td>
 										<td>&emsp;&emsp;
-										<input type="number" class="width_percent workflowinputRadius" name="qty_to[]" step="any" style="text-align:right" id="qty1"></td>
+										<input type="number" class="width_percent workflowinputRadius" name="qty_to[]" step="any" style="text-align:right" id="qty_to"></td>
 									</tr>       
 						       </tbody>
 						    </table>
@@ -459,22 +460,22 @@ input[type=number] {
 <script>
 
     $(document).ready(function(){
-    document.getElementById("qty").value = localStorage.getItem("qty");
+    document.getElementById("qty_from").value = localStorage.getItem("qty_from");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("qty",document.getElementById("qty").value);
+    localStorage.setItem("qty_from",document.getElementById("qty_from").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("qty1").value = localStorage.getItem("qty1");
+    document.getElementById("qty_to").value = localStorage.getItem("qty_to");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("qty1",document.getElementById("qty1").value);
+    localStorage.setItem("qty_to",document.getElementById("qty_to").value);
   });
 
 </script>
@@ -489,5 +490,15 @@ input[type=number] {
   });
 
 </script>
+<script>
 
+    $(document).ready(function(){
+    document.getElementById("datePicker1").value = localStorage.getItem("datePicker1");
+        });
+
+   $(window).on('beforeunload', function() {
+    localStorage.setItem("datePicker1",document.getElementById("datePicker1").value);
+  });
+
+</script>
 {% endblock %}

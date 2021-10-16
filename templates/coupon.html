@@ -53,14 +53,14 @@ document.getElementById("demo").innerHTML = test;
     }
 td 
     {
-        border: 1px solid #dddddd !important;
+        border: 1px solid #000000  !important;
         text-align: left; !important;
         padding: 6px !important;
     }
 th{
     text-align: center !important;
     padding: 6px !important;
-    border: 1px solid #dddddd !important;
+    border: 1px solid #000000  !important;
 }
 .no_pad{
     padding-left:0px !important;
@@ -88,6 +88,20 @@ input[type=text] {
  input{
     width:70px !important;
 }
+.scroll{
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 200px;
+    margin-top: 0px;
+    width: 100%;
+    white-space: nowrap;
+}
+    
+.scroll thead th {
+    position: sticky;
+    top: 0;
+        
+}
 </style>
 <script>
     function myFunction() {
@@ -99,7 +113,7 @@ input[type=text] {
     </script>
 <div class="container">
     <h2><b><center> COUPON</center></b></h2>
-    <div style="border:1px solid #dddddd;padding:10px;margin:10px;">
+    <!--<div style="border:1px solid #dddddd;padding:10px;margin:10px;">-->
             
             <div class="col-md-85 col-sm-85 col-xs-85">
                 
@@ -108,10 +122,10 @@ input[type=text] {
                         <div class="col-md-05 col-sm-07 col-xs-09">
                             <!--<h6><b>Daily Sale Entries</b></h6>-->
                             <label><b>Code</b></label>&ensp;
-                            <input type="text" name="CodeE" value= " " onclick="myFunction()">
+                            <input type="text" name="CodeE" id="CodeE" onclick="myFunction()">
 
                             <label><b>Name</b></label>&ensp;
-                            <input type="text" name="NameE" value= " ">
+                            <input type="text" name="NameE" value= " " id="NameE">
 
                             <label><b>Validity Start Date</b></label>&ensp;
                             <input type="date" id="datePicker" name="PStDateE" placeholder="Enter YYYY-MM-DD" required="">&emsp;&emsp;
@@ -122,7 +136,7 @@ input[type=text] {
 
                         </div>
                             <br><br>
-                        <div class="col-md-22 col-sm-22 col-xs-22" style="border: 1px solid #dddddd;">
+                        <!--<div class="col-md-22 col-sm-22 col-xs-22" style="border: 1px solid #dddddd;">-->
                         
                             <div class="col-md-15 col-sm-12 col-xs-12  no_pad">     
 
@@ -131,12 +145,12 @@ input[type=text] {
                 
                                 <thead class="tableHeadcolor">
                                     <tr>                                        
-                                        <th>Value(in Rs.)</th>        
-                                        <th>Product Code </th>               
-                                        <th>Discount(%)</th>
-                                        <th>Quantity From</th>
-                                        <th>Quantity To</th> 
-                                        <th>Active</th> 
+                                        <th  style="background-color: #69bc5f !important;">Value(in Rs.)</th>        
+                                        <th  style="background-color: #69bc5f !important;">Product Code </th>               
+                                        <th  style="background-color: #69bc5f !important;">Discount(%)</th>
+                                        <th  style="background-color: #69bc5f !important;">Quantity From</th>
+                                        <th  style="background-color: #69bc5f !important;">Quantity To</th> 
+                                        <th  style="background-color: #69bc5f !important;">Active</th> 
                                     </tr>
                                 </thead>
                                 <tbody id='form' class="form-block_1">
@@ -179,10 +193,12 @@ input[type=text] {
                                     <button type="submit" class="btn btn-primary btn-lg"  id="submitData" value="" disabled>Submit </button>
                                     <a type="edit" class="btn btn-primary btn-lg" value="edit"  href="/managecoupon/" >Edit </a>
                                     <br></br>
-                                <table class="table display data-table1 text-nowrap" style="width:100%;">
+                                <div class ="scroll">
+                            <table class="table display data-table1 text-nowrap" style="width:100%;">
                                     <tbody id='form' class="form-block_1">   
                                    </tbody>
                                 </table>
+                        </div>
              
                         </div>
             </div>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
@@ -373,66 +389,66 @@ function myFunction() {
 <script>
 
     $(document).ready(function(){
-    document.getElementById("goodsour").value = localStorage.getItem("goodsour");
+    document.getElementById("CoupValue").value = localStorage.getItem("CoupValue");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("goodsour",document.getElementById("goodsour").value);
+    localStorage.setItem("CoupValue",document.getElementById("CoupValue").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("code_center").value = localStorage.getItem("code_center");
+    document.getElementById("CodeE").value = localStorage.getItem("CodeE");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("code_center",document.getElementById("code_center").value);
+    localStorage.setItem("CodeE",document.getElementById("CodeE").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("milktype").value = localStorage.getItem("milktype");
+    document.getElementById("NameE").value = localStorage.getItem("NameE");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("milktype",document.getElementById("milktype").value);
+    localStorage.setItem("NameE",document.getElementById("NameE").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("samplecode").value = localStorage.getItem("samplecode");
+    document.getElementById("discnt").value = localStorage.getItem("discnt");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("samplecode",document.getElementById("samplecode").value);
+    localStorage.setItem("discnt",document.getElementById("discnt").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("can").value = localStorage.getItem("can");
+    document.getElementById("qty_from").value = localStorage.getItem("qty_from");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("can",document.getElementById("can").value);
+    localStorage.setItem("qty_from",document.getElementById("qty_from").value);
   });
 
 </script>
 <script>
 
     $(document).ready(function(){
-    document.getElementById("qty").value = localStorage.getItem("qty");
+    document.getElementById("qty_to").value = localStorage.getItem("qty_to");
         });
 
    $(window).on('beforeunload', function() {
-    localStorage.setItem("qty",document.getElementById("qty").value);
+    localStorage.setItem("qty_to",document.getElementById("qty_to").value);
   });
 
 </script>
