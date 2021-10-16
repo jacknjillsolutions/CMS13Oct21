@@ -2423,7 +2423,7 @@ class Coupon(models.Model):
     discnt = models.FloatField(default=0.0,null=True,blank=True)
     qty_from = models.FloatField(default=0.0,null=True,blank=True)
     qty_to = models.FloatField(default=0.0,null=True,blank=True)
-    active = models.BooleanField(default=True) 
+    active =models.CharField(max_length=255,null=True,blank=True,default='')                            
     remove = models.CharField(max_length=255,null=True,blank=True)
     updated_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='updateR2')
     created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True, related_name='createR2')

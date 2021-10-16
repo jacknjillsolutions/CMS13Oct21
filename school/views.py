@@ -7491,7 +7491,524 @@ class GeneratePdfproductmaster_report(View):
             response['Content-Disposition'] = content
             return response
         return HttpResponse("Not Found")
+##END
+def excel_downloadProductmasterreport(request,slug,slug1):
+    brch = request.user.extendeduser.branch
+    if request.user.extendeduser.branch == brch:
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day=1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        data = prodMaster.objects.filter()
+        
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="Productmasterreport.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('ProdMaster', cell_overwrite_ok=True)
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_date = xlwt.XFStyle()
+        font_date.num_format_str = 'D-MM-YYYY'
+        columns = ['S.No','PCode','PName','Document','custCode','PStDate','PEndDate','UnitRate','ProdType','QtyFrom','QtyTo','Active']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        font_style = xlwt.XFStyle()
+        # x = datetime.strptime(date, "%d/%m/%Y")
+        if slug == 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter().values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug == 'all' and slug1 != 'all':
+            rows = prodMaster.objects.using(brch).filter(active = slug1).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug != 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter(PCode = slug).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        else:
+            rows = prodMaster.objects.using(brch).filter(PCode = slug,active = slug1 ).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+       
+        
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)+1):
+                
+                if col_num==0:
+                    ws.write(row_num, col_num, row_num, font_style)                    
+                    #ws.write(row_num, 0, row_num, font_date)
+                elif col_num==5 or col_num==6:
+                    ws.write(row_num, col_num, row[col_num-1], font_style)
+                    ws.write(row_num, col_num, row[col_num-1], font_date) 
+                else:
+                    ws.write(row_num, col_num, row[col_num-1], font_style)
+                    #ws.write(row_num, col_num, row[col_num-1], font_date)
+        wb.save(response)
+        return response
+    else:
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day=1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        data = prodMaster.objects.using(brch).filter()
+    
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="Productmasterreport.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('ProdMaster', cell_overwrite_ok=True)
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_date = xlwt.XFStyle()
+        font_date.num_format_str = 'D-MM-YYYY'
+        columns = ['S.No','PCode','PName','Document','custCode','PStDate','PEndDate','UnitRate','ProdType','QtyFrom','QtyTo','Active']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        font_style = xlwt.XFStyle()
+        # x = datetime.strptime(date, "%d/%m/%Y")
+        if slug == 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter().values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug == 'all' and slug1 != 'all':
+            rows = prodMaster.objects.using(brch).filter(active = slug1).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug != 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter(PCode = slug).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        else:
+            rows = prodMaster.objects.using(brch).filter(PCode = slug,active = slug1 ).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+                ws.write(row_num, 0, row[0], font_date)
+                ws.write(row_num, 1, row[1], font_date)
+        wb.save(response)
+        return response
+# END
+def coupon(request):
+    #try:
+        if request.session.has_key('name'):
+            brch = request.user.extendeduser.branch
+            if request.user.extendeduser.branch == brch:
+                coupon = Coupon.objects.using(brch).all()
+                Prodmaster = prodMaster.objects.using(brch).all()
+                if request.method == "POST":
+                    
+                    for index,j in enumerate(request.POST.getlist('CoupValue[]')):
+                        if index != 0 :
+                            details_form =  Coupon.objects.using(brch).create(
+                                cpCode=request.POST["CodeE"],
+                                cpName=request.POST["NameE"],
+                                PStDate=request.POST["PStDateE"],
+                                PEndDate=request.POST["PEndDateE"],
+                                CoupValue=request.POST.getlist('CoupValue[]')[index],
+                                PCode=request.POST.getlist('PCode[]')[index],
+                                discnt=request.POST.getlist('discnt[]')[index],
+                                qty_from=request.POST.getlist('qty_from[]')[index],
+                                qty_to=request.POST.getlist('qty_to[]')[index],
+                                active = request.POST.getlist('active[]')[index],
+                        # date_from = date.today(),
+                        # date_to = datetime.datetime.now() + timedelta(days=365 ),
 
+                                )
+                            details_form.save(using=brch)    
+                    messages.success(request, 'Your details have been saved!')
+                return render(request, 'coupon.html', locals())
+            
+        else:
+            return render(request, 'index.html', locals())
+    #except Exception as err:
+     #   if search("1062", str(err)):
+      #      messages.error(request, 'Coupon Code Duplicated:' + request.POST["Code"])
+       # else:
+        #    messages.success(request, 'Invalid Data Entry')
+    # messages.info(request,'err')
+        return render(request, 'coupon.html', locals())
+
+
+def managecoupon(request):
+    # try:
+        if request.session.has_key('name'):
+            brch = request.user.extendeduser.branch
+            if request.user.extendeduser.branch == brch:
+                coupon = Coupon.objects.using(brch).all()
+                al = Coupon.objects.using(brch).all()
+                Prodmaster = prodMaster.objects.using(brch).all()
+                today = date.today()
+                t_m = datetime.datetime.now().month
+                start_of_m = today.replace(day=1, month=t_m)
+                end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+                if request.method == "POST":
+                    #datefrom = request.POST.get('datefrom')
+                    #dateto = request.POST.get('dateto')
+
+                    # z = request.POST.get('active')
+                    # if z == 'Yes':
+                    #     active = True
+                    # else:
+                    #     active = False
+                    al = Coupon.objects.using(brch).all()
+                    #datefrom = datetime.datetime.strptime(datefrom,'%Y-%m-%d')
+                   #dateto = datetime.datetime.strptime(dateto,'%Y-%m-%d')
+                    #dateH = request.POST["date_t2"]
+                    #shiftH = request.POST["shift_t2"]
+                    for index,j in enumerate(request.POST.getlist("CoupValue[]")):
+                        minmaxfat = Coupon.objects.using(brch).filter(id=request.POST.getlist("dcid3[]")[index]).update( 
+                            cpCode = request.POST.getlist("Code[]")[index],
+                            cpName = request.POST.getlist("Name[]")[index],
+                            PStDate=request.POST.getlist("PStDate[]")[index],
+                            PEndDate=request.POST.getlist("PEndDate[]")[index],
+                            CoupValue=request.POST.getlist("CoupValue[]")[index],
+                            PCode = request.POST.getlist("PCode[]")[index],
+                            discnt = request.POST.getlist("discnt[]")[index],
+                            qty_from = request.POST.getlist("qty_from[]")[index],
+                            qty_to = request.POST.getlist("qty_to[]")[index],
+                            active = request.POST.getlist("active[]")[index],
+                            remove= request.POST.getlist("remove[]")[index],
+                        )
+                    
+                    messages.success(request, 'Your details have been saved!')
+                    data = Coupon.objects.using(brch).filter(remove='Y').delete()
+                    
+                    return render(request,'managecoupon1.html',locals())
+            else:
+                coupon = Coupon.objects.all()
+                al = Coupon.objects.all()
+        
+                Prodmaster = prodMaster.objects.all()
+                if request.method == "POST":
+                    # z = request.POST.get('active')
+                    # if z == 'Yes':
+                    #     active = True
+                    # else:
+                    #     active = False
+                    al = Coupon.objects.all()
+
+                    #dateH = request.POST["date_t2"]
+                    #shiftH = request.POST["shift_t2"]
+                    for index,j in enumerate(request.POST.getlist("CoupValue[]")):
+                        minmaxfat = Coupon.objects.filter(id=request.POST.getlist("dcid3[]")[index]).update( 
+                            cpCode = request.POST.getlist("Code[]")[index],
+                            cpName = request.POST.getlist("Name[]")[index],
+                            PStDate=request.POST.getlist("PStDate[]")[index],
+                            PEndDate=request.POST.getlist("PEndDate[]")[index],
+                            CoupValue=request.POST.getlist("CoupValue[]")[index],
+                            PCode = request.POST.getlist("PCode[]")[index],
+                            discnt = request.POST.getlist("discnt[]")[index],
+                            qty_from = request.POST.getlist("qty_from[]")[index],
+                            qty_to = request.POST.getlist("qty_to[]")[index],
+                            active = request.POST.getlist("active[]")[index],
+                            remove= request.POST.getlist("remove[]")[index],
+                            )
+                    
+                    messages.success(request, 'Your details have been saved!')
+                    
+                    data = Coupon.objects.filter(remove='Y').delete()           
+                
+
+                #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return render(request,'managecoupon.html',locals())
+        else:
+            return render(request,'index.html',locals())
+    # except Exception as err:
+    #         if search("1062",str(err)):
+    #             messages.error(request,'Coupon Code Duplicated:'+request.POST["Code"])
+    #         else:
+    #             messages.success(request,'Invalid Data Entry')
+    #     #messages.info(request,'err')
+        return render (request,'managecoupon.html',locals())
+
+
+def managecoupon1(request):
+    try:
+        if request.session.has_key('name'):
+            brch = request.user.extendeduser.branch
+            if request.user.extendeduser.branch == brch:
+
+                coupon = Coupon.objects.using(brch).all()
+                al = Coupon.objects.using(brch).all()
+                
+                Prodmaster = prodMaster.objects.using(brch).all()
+                coupon = Coupon.objects.using(brch).all()
+
+                if request.method == "POST":
+                    al = Coupon.objects.using(brch).all()
+                return render(request,'managecoupon.html',locals())
+            else:
+                coupon = Coupon.objects.all()
+                al = Coupon.objects.all()
+        
+                Prodmaster = prodMaster.objects.all()
+                coupon = Coupon.objects.all()
+                if request.method == "POST":
+                    al = Coupon.objects.all()
+
+                #dateH = request.POST["date_t2"]
+                #shiftH = request.POST["shift_t2"]
+                #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return render(request,'managecoupon.html',locals())
+        else:
+            return render(request,'index.html',locals())
+    except Exception as err:
+            if search("1062",str(err)):
+                messages.error(request,'Coupon Code Duplicated:'+request.POST["Code"])
+            else:
+                messages.success(request,'Invalid Data Entry')
+        #messages.info(request,'err')
+    return render (request,'managecoupon.html',locals())   
+
+
+def couponreport(request):
+    brch = request.user.extendeduser.branch
+    if request.user.extendeduser.branch == brch:
+
+        coupon = Coupon.objects.using(brch).all()
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day =1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        # return HttpResponse(end_of_m)
+        if request.method == "POST":
+            PStDate = request.POST["PStDate"]
+            PEndDate = request.POST["PEndDate"]
+            cpCode = request.POST["CodeE"]
+            active = request.POST["active"]
+            
+            
+            if cpCode == 'all' and active == 'all':
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate]).distinct()
+            elif cpCode == 'all' and active != 'all':
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate],active = active).distinct()
+            elif active == 'all' and cpCode != 'all':
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate],cpCode = cpCode).distinct()
+            else:
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate],cpCode = cpCode,active = active).distinct()
+    else:           
+        coupon = Coupon.objects.all()
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day =1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        # return HttpResponse(end_of_m)
+        if request.method == "POST":
+            PStDate = request.POST["PStDate"]
+            PEndDate = request.POST["PEndDate"]
+            cpCode = request.POST["CodeE"]
+            
+            if cpCode == 'all' and active == 'all':
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate]).distinct()
+            elif cpCode == 'all' and active != 'all':
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate],active = active).distinct()
+            elif active == 'all' and cpCode != 'all':
+                al = Coupon.objects.using(brch).filter(PStDate__range=[PStDate,PEndDate],PEndDate__range=[PStDate,PEndDate],cpCode = CodeE).distinct()
+            else:
+                al = Coupon.objects.using(brch).filter(PStDate=[PStDate,PEndDate],PEndDate=[PStDate,PEndDate],cpCode = CodeE,active = active).distinct()
+            
+    return render(request,'couponreport.html',locals())
+    ##END
+class GeneratePdfcoupon_report(View):
+    def get(self, request,slug,slug1,slug2,slug3, *args, **kwargs):
+        template = get_template('pdf_couponreport.html')
+        today = date.today()
+        start_of_yr = today.replace(day =1, month=4)
+        end_of_yr = start_of_yr + relativedelta(months=11,days=31) - timedelta(days=1)
+        brch = request.user.extendeduser.branch
+        if slug == 'all' and slug3 == 'all':
+            data = Coupon.objects.using(brch).filter(PStDate__range=[slug1,slug2],PEndDate__range=[slug1,slug2]).distinct()
+        elif slug == 'all' and slug3 != 'all':
+            data = Coupon.objects.using(brch).filter(PStDate__range=[slug1,slug2],PEndDate__range=[slug1,slug2],active = slug3).distinct()
+        elif slug3 == 'all' and slug != 'all':
+            data = Coupon.objects.using(brch).filter(PStDate__range=[slug3,slug2],PEndDate__range=[slug3,slug2],cpCode = slug).distinct()
+        else:
+            data = Coupon.objects.using(brch).filter(PStDate=[slug,slug2],PEndDate=[slug1,slug2],cpCode = slug,active = slug3).distinct()
+            
+       
+        context = {
+            'cpCode':slug,
+            'PStDate':slug1,
+            'PEndDate':slug2,
+            'active':slug3,
+            'data':data,
+        }
+        html = template.render(context)
+        pdf = render_to_pdf("pdf_couponreport.html",context)
+        if pdf:
+            response = HttpResponse(pdf,content_type = "application/pdf")
+            filename = slug+".pdf"
+            content = "inline; filename=%s" %(filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename=%s" %(filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not Found")
+##END
+def excel_downloadcouponreport(request,slug,slug1):
+    brch = request.user.extendeduser.branch
+    if request.user.extendeduser.branch == brch:
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day=1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        data = Coupon.objects.filter()
+        
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="couponreport.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('Coupon', cell_overwrite_ok=True)
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_date = xlwt.XFStyle()
+        font_date.num_format_str = 'D-MM-YYYY'
+        columns = ['S.No','cpCode','cpName','PStDate','PEndDate','CoupValue','PCode','Discnt','QtyFrom','QtyTo','Active']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        font_style = xlwt.XFStyle()
+        # x = datetime.strptime(date, "%d/%m/%Y")
+        
+        if slug == 'all' and slug1 == 'all':
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        elif slug == 'all' and slug1 != 'all':
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        elif slug1 == 'all' and slug != 'all':
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        else:
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+       
+        
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)+1):
+                
+                if col_num==0:
+                    ws.write(row_num, col_num, row_num, font_style)                    
+                    #ws.write(row_num, 0, row_num, font_date)
+                elif col_num==3 or col_num==4:
+                    ws.write(row_num, col_num, row[col_num-1], font_style)
+                    ws.write(row_num, col_num, row[col_num-1], font_date) 
+                else:
+                    ws.write(row_num, col_num, row[col_num-1], font_style)
+                    #ws.write(row_num, col_num, row[col_num-1], font_date)
+        wb.save(response)
+        return response
+    else:
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day=1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        data = prodMaster.objects.using(brch).filter()
+    
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="Productmasterreport.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('ProdMaster', cell_overwrite_ok=True)
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_date = xlwt.XFStyle()
+        font_date.num_format_str = 'D-MM-YYYY'
+        columns = ['S.No','PCode','PName','Document','custCode','PStDate','PEndDate','UnitRate','ProdType','QtyFrom','QtyTo','Active']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        font_style = xlwt.XFStyle()
+        # x = datetime.strptime(date, "%d/%m/%Y")
+        if slug == 'all' and slug3 == 'all':
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        elif slug == 'all' and slug3 != 'all':
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        elif slug3 == 'all' and slug != 'all':
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        else:
+            rows = Coupon.objects.using(brch).filter().values_list('cpCode', 'cpName', 'PStDate','PEndDate', 'CoupValue', 'PCode','discnt','qty_from', 'qty_to', 'active')
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+                ws.write(row_num, 0, row[0], font_date)
+                ws.write(row_num, 1, row[1], font_date)
+        wb.save(response)
+        return response
+
+
+def excel_downloadProductmasterreport(request,slug,slug1):
+    brch = request.user.extendeduser.branch
+    if request.user.extendeduser.branch == brch:
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day=1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        data = prodMaster.objects.filter()
+        
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="Productmasterreport.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('ProdMaster', cell_overwrite_ok=True)
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_date = xlwt.XFStyle()
+        font_date.num_format_str = 'D-MM-YYYY'
+        columns = ['S.No','PCode','PName','Document','custCode','PStDate','PEndDate','UnitRate','ProdType','QtyFrom','QtyTo','Active']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        font_style = xlwt.XFStyle()
+        # x = datetime.strptime(date, "%d/%m/%Y")
+        if slug == 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter().values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug == 'all' and slug1 != 'all':
+            rows = prodMaster.objects.using(brch).filter(active = slug1).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug != 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter(PCode = slug).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        else:
+            rows = prodMaster.objects.using(brch).filter(PCode = slug,active = slug1 ).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+       
+        
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)+1):
+                
+                if col_num==0:
+                    ws.write(row_num, col_num, row_num, font_style)                    
+                    #ws.write(row_num, 0, row_num, font_date)
+                elif col_num==5 or col_num==6:
+                    ws.write(row_num, col_num, row[col_num-1], font_style)
+                    ws.write(row_num, col_num, row[col_num-1], font_date) 
+                else:
+                    ws.write(row_num, col_num, row[col_num-1], font_style)
+                    #ws.write(row_num, col_num, row[col_num-1], font_date)
+        wb.save(response)
+        return response
+    else:
+        today = date.today()
+        t_m = datetime.datetime.now().month
+        start_of_m = today.replace(day=1, month=t_m)
+        end_of_m = start_of_m + relativedelta(months=1) - timedelta(days=1)
+        data = prodMaster.objects.using(brch).filter()
+    
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="Productmasterreport.xls"'
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet('ProdMaster', cell_overwrite_ok=True)
+        row_num = 0
+        font_style = xlwt.XFStyle()
+        font_style.font.bold = True
+        font_date = xlwt.XFStyle()
+        font_date.num_format_str = 'D-MM-YYYY'
+        columns = ['S.No','PCode','PName','Document','custCode','PStDate','PEndDate','UnitRate','ProdType','QtyFrom','QtyTo','Active']
+        for col_num in range(len(columns)):
+            ws.write(row_num, col_num, columns[col_num], font_style)
+        font_style = xlwt.XFStyle()
+        # x = datetime.strptime(date, "%d/%m/%Y")
+        if slug == 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter().values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug == 'all' and slug1 != 'all':
+            rows = prodMaster.objects.using(brch).filter(active = slug1).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        elif slug != 'all' and slug1 == 'all':
+            rows = prodMaster.objects.using(brch).filter(PCode = slug).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        else:
+            rows = prodMaster.objects.using(brch).filter(PCode = slug,active = slug1 ).values_list('PCode', 'PName', 'document','custCode', 'PStDate','PEndDate', 'unitRate', 'prod_type','qty_from', 'qty_to', 'active')
+        for row in rows:
+            row_num += 1
+            for col_num in range(len(row)):
+                ws.write(row_num, col_num, row[col_num], font_style)
+                ws.write(row_num, 0, row[0], font_date)
+                ws.write(row_num, 1, row[1], font_date)
+        wb.save(response)
+        return response
 
 
 ##module:  CREATE PRODUCT MASTER STARTS 10-10-21
@@ -29150,7 +29667,7 @@ def supervisorreport(request):
             elif active == 'all' and supervisorcode != 'all':
                 sr = Supervisor.objects.using(brch).filter(datefrom__range=[datefrom,dateto],dateto__range=[datefrom,dateto],code = supervisorcode).distinct()
             else:
-                sr = Supervisor.objects.using(brch).filter(datefrom__range=[datefrom,dateto],dateto__range=         [datefrom,dateto],code=supervisorcode,active=active).distinct()
+                sr = Supervisor.objects.using(brch).filter(datefrom__range=[datefrom,dateto],dateto__range=[datefrom,dateto],code=supervisorcode,active=active).distinct()
     else:           
         supervisor = Supervisor.objects.all()
         today = date.today()

@@ -71,33 +71,6 @@ $(document).ready( function() {
 	padding: 7px !important;
 	border: 1px white;
 }
-.scroll{
-	overflow-y: auto;
-	overflow-x: auto;
-	height: 400px;
-	margin-top: -5px;
-	width: 100%;
-	white-space: nowrap;
-}
-	
-.scroll thead th {
-    position: sticky;
-    top: 0;
-    
-}
-
-.titledash{
-	width:  100%;
-	height:  50px;
-	text-align: center;
-	text-transform: capitalize;
-	background-color: #5d50c6 !important;
-	color:  #fff;
-	font-size: 30px;
-	font-weight: bold;
-}
-
-
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -106,22 +79,22 @@ $(document).ready( function() {
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-md-12 col-xs-12">
-			<br><button type="button"><a href="/Productmasterreport/pdf/{{PCode}}/{{active}}/" target="_blank"> PDF Download</a></button>&emsp;
-			<button type="button"><a href="/excel-Productmasterreport/{{PCode}}/{{active}}/" target="_blank"> Excel Download</a></button><br>
+			<br><button type="button"><a href="/couponreport/pdf/{{cpCode}}/{{PStDate}}/{{PEndDate}}/{{active}}/" target="_blank"> PDF Download</a></button>&emsp;
+			<button type="button"><a href="/excel-coupon-report/{{cpCode}}/{{PStDate}}/{{PEndDate}}/{{active}}/" target="_blank"> Excel Download</a></button><br>
 			<form method="POST" action="" enctype=""><br>
 				{% csrf_token %}
-				<label for="fname"><b>From Date</b> </label>
-				<input class="border_right " type="date" onfocus="(this.type='date')" onblur="(this.type='date')" id="my_date_picker" name="datefrom" placeholder="Enter MM/DD/YYYY" required="" value="{{start_of_m|date:'Y-m-d'}}">
+				<label for="fname"><b> Validity Start Date</b> </label>
+				<input class="border_right " type="date" onfocus="(this.type='date')" onblur="(this.type='date')" id="my_date_picker" name="PStDate" placeholder="Enter MM/DD/YYYY" required="" value="{{start_of_m|date:'Y-m-d'}}">
 				<!--<input class="border_foot start_date" type="date" id="my_date_picker" name="date_from" placeholder="Enter MM/DD/YYYY" required="">-->
-				<label for="fname"> <b>TO Date</b></label>
-				<input class="border_right" type="date" onfocus="(this.type='date')" onblur="(this.type='date')" id="my_date_picker1" name="dateto" placeholder="Enter MM/DD/YYYY" value="{{end_of_m|date:'Y-m-d'}}" required="">
+				<label for="fname"> <b>Validity End Date</b></label>
+				<input class="border_right" type="date" onfocus="(this.type='date')" onblur="(this.type='date')" id="my_date_picker1" name="PEndDate" placeholder="Enter MM/DD/YYYY" value="{{end_of_m|date:'Y-m-d'}}" required="">
 				
 				<!--<input class="border_foot" type="date" id="my_date_picker" name="date_to" placeholder="Enter MM/DD/YYYY" required="">-->
-				<label for="fname"><b>PCode</b>  </label>
-				<select name="PCodeE">
+				<label for="fname"><b>Code</b>  </label>
+				<select name="CodeE">
 				    <option value="all">All</option>
-				    {% for Prodmaster in Prodmaster %}
-						    <option value="{{Prodmaster.PCode}}">{{Prodmaster.PCode}}</option>
+				    {% for coupon in coupon %}
+						    <option value="{{coupon.cpCode}}">{{coupon.cpCode}}</option>
 				  	{% endfor %}
 			  	</select>
 			  	<!--<label for="fname"><b>Center</b> </label>
@@ -133,7 +106,7 @@ $(document).ready( function() {
                   </select>-->
 
                    <label><b>Active</b></label>
-			  	<select name="active" value="{{PM.active}}" id="active" required>
+			  	<select name="active" value="{{al.active}}" id="active" required>
 			  	<option value="all">all</option>
 				<option value="yes">yes</option>
 				<option value="no">no</option>	
@@ -142,65 +115,57 @@ $(document).ready( function() {
 				  <button type="submit" class="btn btn-primary btn-lg" id="getdata" value=""> Get Data </button>
 				<br><br>
 			</form>
-			<body>
-				
-					 <div colspan="11" class="title_dash">Product Master Report</th></div>
-					
-					
-				<div class ="scroll">
-				<table >
+			<table>
+				<thead>
+					<tr>
+   						 <th colspan="10" class="title_dash" style="text-transform: capitalize;background-color: #5d50c6 !important;">Coupon Report</th>
+  					</tr>
+  				</thead>
 			
+				<thead style="background-color: #69bc5f !important;" id="centershow">
+					<tr>
+
+						
+					</tr>
+				</thead>
 			
-				<thead >
+				<thead style="background-color: #69bc5f !important;">
 					<tr>
 						
-						<th width="10%" style="background-color: #69bc5f !important;">PCode</th>
-                        <th width="10%" style="background-color: #69bc5f !important;">PName</th>
-                        <th width="10%" style="background-color: #69bc5f !important;">Document</th>
-						<th width="10%" style="background-color: #69bc5f !important;">ProdType</th>
-						<th width="10%" style="background-color: #69bc5f !important;">CustType</th>
-						<th width="10%" style="background-color: #69bc5f !important;">Start Date</th>
-						<th width="10%" style="background-color: #69bc5f !important;">End Date</th>
-						<th width="10%" style="background-color: #69bc5f !important;">Unit Rate</th>
-						<th width="10%" style="background-color: #69bc5f !important;">Qty From</th>
-						<th width="10%" style="background-color: #69bc5f !important;">Qty To</th>
-						<th width="10%" style="background-color: #69bc5f !important;">Active</th>
-
+						<th width="10%" class="school_activity"> Code</th>
+                        <th width="10%" class="school_activity"> Name</th>
+                        <th width="10%" class="school_activity">Validity Start date</th>
+						<th width="10%" class="school_activity">Validity End date</th>
+						<th width="10%" class="school_activity">Value(in Rs.)</th>
+						<th width="10%" class="school_activity">Product Code</th>
+						<th width="10%" class="school_activity">Discount(%)</th>
+						<th width="10%" class="school_activity">Quantity From</th>
+						<th width="10%" class="school_activity">Quantity To</th>
+						<th width="10%" class="school_activity">Active</th>
 						
 						<!--<th width="10%" class="school_activity">Receviable</th>
 						<th width="10%" class="school_activity">Payment</th>-->
 					</tr>
 				</thead>
 				<tbody>
-					{% for pm in pm %}
+					{% for al in al %}
 					<tr>
-						<td>{{pm.PCode}}</td>
-						<td>{{pm.PName}}</td>
-						<td>{{pm.document}}</td>
-						<td>{{pm.prod_type}}</td>
-						<td>{{pm.custCode}}</td>
-						<td>{{pm.PStDate|date:'d-m-Y'}}</td>
-						<td>{{pm.PEndDate|date:'d-m-Y'}}</td>
-						<td>{{pm.unitRate}}</td>
-						<td>{{pm.qty_from}}</td>
-						<td>{{pm.qty_to}}</td>
-						<td>{{pm.active}}</td>
+						<td>{{al.cpCode}}</td>
+						<td>{{al.cpName}}</td>
+						<td>{{al.PStDate|date:'d-m-Y'}}</td>
+						<td>{{al.PEndDate|date:'d-m-Y'}}</td>
+						<td>{{al.CoupValue}}</td>
+						<td>{{al.PCode}}</td>
+						<td>{{al.discnt}}</td>
+						<td>{{al.qty_from}}</td>
+						<td>{{al.qty_to}}</td>
+						<td>{{al.active}}</td>
 					</tr>
 					{% endfor %}
-				</div>
 				</tbody>
 			</table>
-			<br><br><br>
 		</div>
 	</div>
-</body>
-	<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
-		<br>
 </div>
 <script src="{% static 'js/ajax-jquery.min.js' %}"></script>
 <script type="text/javascript">

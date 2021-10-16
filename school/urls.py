@@ -27,10 +27,15 @@ urlpatterns = [
     url(r'^manageproductmaster/$', views.manageproductmaster, name='manageproductmaster'),
     url(r'^manageproductmaster1/$', views.manageproductmaster1, name='manageproductmaster1'),
     url(r'^Productmasterreport/$', views.Productmasterreport, name='Productmasterreport'),
+    url(r'^excel-Productmasterreport/(?P<slug>.*)/(?P<slug1>.*)/$', views.excel_downloadProductmasterreport, name='excel_downloadProductmasterreport'),
     url(r'^salesexec/$', views.salesexec, name='salesexec'),
     url(r'^manage_salesExec/$', views.manage_salesexec, name='manage_salesExec'),
     url(r'^managesalesexec/$', views.managesalesexec, name='managesalesexec'),
-
+    url(r'^coupon/$', views.coupon, name='coupon'),
+    url(r'^managecoupon/$', views.managecoupon, name='managecoupon'),
+    url(r'^managecoupon1/$', views.managecoupon1, name='managecoupon1'),
+    url(r'^couponreport/$', views.couponreport, name='couponreport'),
+    url(r'^excel-coupon-report/(?P<slug>.*)/(?P<slug1>.*)/$', views.excel_downloadcouponreport, name='excel_downloadcouponreport'),
     ##Sales Module
 
     # url(r'^fileupload/$',views.model_form_upload, name='model_form_upload'),
